@@ -1,0 +1,189 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=4
+
+_global_script_classes=[ {
+"base": "PacketManager",
+"class": "ClientPacketManager",
+"language": "GDScript",
+"path": "res://networking/ClientPacketManager.gd"
+}, {
+"base": "Mover",
+"class": "Gamer",
+"language": "GDScript",
+"path": "res://gamer/Gamer.gd"
+}, {
+"base": "Node",
+"class": "InstrucBuffer",
+"language": "GDScript",
+"path": "res://util/InstrucBuffer.gd"
+}, {
+"base": "Reference",
+"class": "Intersector",
+"language": "GDScript",
+"path": "res://util/Intersector.gd"
+}, {
+"base": "Reference",
+"class": "LagBuffer",
+"language": "GDScript",
+"path": "res://util/LagBuffer.gd"
+}, {
+"base": "Object",
+"class": "Math",
+"language": "GDScript",
+"path": "res://util/Math.gd"
+}, {
+"base": "KinematicBody",
+"class": "Mover",
+"language": "GDScript",
+"path": "res://gamer/Mover.gd"
+}, {
+"base": "Reference",
+"class": "PacketManager",
+"language": "GDScript",
+"path": "res://networking/PacketManager.gd"
+}, {
+"base": "StreamPeerBuffer",
+"class": "PacketSerializer",
+"language": "GDScript",
+"path": "res://util/PacketSerializer.gd"
+}, {
+"base": "KinematicBody",
+"class": "Player",
+"language": "GDScript",
+"path": "res://Player.gd"
+}, {
+"base": "Reference",
+"class": "PoolBuffer",
+"language": "GDScript",
+"path": "res://util/PoolBuffer.gd"
+}, {
+"base": "Node",
+"class": "ServerPacketManager",
+"language": "GDScript",
+"path": "res://networking/ServerPacketManager.gd"
+}, {
+"base": "Reference",
+"class": "Slice",
+"language": "GDScript",
+"path": "res://networking/Slice.gd"
+}, {
+"base": "TestMover",
+"class": "TestGamer",
+"language": "GDScript",
+"path": "res://movement/TestGamer.gd"
+}, {
+"base": "KinematicBody",
+"class": "TestMover",
+"language": "GDScript",
+"path": "res://movement/TestMover.gd"
+}, {
+"base": "Timer",
+"class": "TimeQueue",
+"language": "GDScript",
+"path": "res://util/TimeQueue.gd"
+} ]
+_global_script_class_icons={
+"ClientPacketManager": "",
+"Gamer": "",
+"InstrucBuffer": "",
+"Intersector": "",
+"LagBuffer": "",
+"Math": "",
+"Mover": "",
+"PacketManager": "",
+"PacketSerializer": "",
+"Player": "",
+"PoolBuffer": "",
+"ServerPacketManager": "",
+"Slice": "",
+"TestGamer": "",
+"TestMover": "",
+"TimeQueue": ""
+}
+
+[application]
+
+config/name="Bulbliterate"
+run/main_scene="res://map/BasicMap.tscn"
+config/icon="res://icon.png"
+
+[autoload]
+
+Network="*res://networking/Network.gd"
+
+[display]
+
+window/size/width=1280
+window/size/height=920
+window/vsync/use_vsync=false
+
+[input]
+
+move_left={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":65,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
+}
+move_right={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":68,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
+}
+move_forward={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":87,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
+}
+move_backward={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":83,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
+}
+toggle_mouse_mode={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777217,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
+}
+jump={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":32,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
+}
+click={
+"deadzone": 0.5,
+"events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":1,"pressed":false,"doubleclick":false,"script":null)
+ ]
+}
+alt_click={
+"deadzone": 0.5,
+"events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":2,"pressed":false,"doubleclick":false,"script":null)
+ ]
+}
+signature_ability={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":69,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
+}
+ultimate_ability={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":81,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
+}
+
+[physics]
+
+common/physics_jitter_fix=0.0
+3d/physics_engine="Bullet"
+3d/active_soft_world=false
+
+[rendering]
+
+quality/filters/msaa=2
+environment/default_environment="res://default_env.tres"
