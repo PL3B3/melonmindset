@@ -20,109 +20,70 @@ directional_shadow_mode = 0
 
 [node name="Geometry" type="Spatial" parent="."]
 
-[node name="Floor" type="StaticBody" parent="Geometry"]
+[node name="Bounds" type="Spatial" parent="Geometry"]
+
+[node name="Floor" type="StaticBody" parent="Geometry/Bounds"]
 transform = Transform( 50, 0, 0, 0, 1, 0, 0, 0, 50, 0, 0, 0 )
 collision_mask = 3
 
-[node name="MeshInstance" type="MeshInstance" parent="Geometry/Floor"]
+[node name="MeshInstance" type="MeshInstance" parent="Geometry/Bounds/Floor"]
 mesh = SubResource( 1 )
 material/0 = ExtResource( 4 )
 
-[node name="CollisionShape" type="CollisionShape" parent="Geometry/Floor"]
+[node name="CollisionShape" type="CollisionShape" parent="Geometry/Bounds/Floor"]
 shape = SubResource( 3 )
 
-[node name="Wall" type="StaticBody" parent="Geometry"]
+[node name="Wall" type="StaticBody" parent="Geometry/Bounds"]
 transform = Transform( 50, 0, 0, 0, 5, 0, 0, 0, 1, 0, 5, -51 )
 
-[node name="MeshInstance" type="MeshInstance" parent="Geometry/Wall"]
+[node name="MeshInstance" type="MeshInstance" parent="Geometry/Bounds/Wall"]
 mesh = SubResource( 1 )
 material/0 = ExtResource( 4 )
 
-[node name="CollisionShape" type="CollisionShape" parent="Geometry/Wall"]
+[node name="CollisionShape" type="CollisionShape" parent="Geometry/Bounds/Wall"]
 shape = SubResource( 3 )
 
-[node name="Wall2" type="StaticBody" parent="Geometry"]
+[node name="Wall2" type="StaticBody" parent="Geometry/Bounds"]
 transform = Transform( 50, 0, 0, 0, 5, 0, 0, 0, 1, 0, 5, 51 )
 
-[node name="MeshInstance" type="MeshInstance" parent="Geometry/Wall2"]
+[node name="MeshInstance" type="MeshInstance" parent="Geometry/Bounds/Wall2"]
 mesh = SubResource( 1 )
 material/0 = ExtResource( 4 )
 
-[node name="CollisionShape" type="CollisionShape" parent="Geometry/Wall2"]
+[node name="CollisionShape" type="CollisionShape" parent="Geometry/Bounds/Wall2"]
 shape = SubResource( 3 )
 
-[node name="Wall3" type="StaticBody" parent="Geometry"]
+[node name="Wall3" type="StaticBody" parent="Geometry/Bounds"]
 transform = Transform( 1, 0, 0, 0, 5, 0, 0, 0, 50, -51, 5, 0 )
 
-[node name="MeshInstance" type="MeshInstance" parent="Geometry/Wall3"]
+[node name="MeshInstance" type="MeshInstance" parent="Geometry/Bounds/Wall3"]
 mesh = SubResource( 1 )
 material/0 = ExtResource( 4 )
 
-[node name="CollisionShape" type="CollisionShape" parent="Geometry/Wall3"]
+[node name="CollisionShape" type="CollisionShape" parent="Geometry/Bounds/Wall3"]
 shape = SubResource( 3 )
 
-[node name="Wall4" type="StaticBody" parent="Geometry"]
+[node name="Wall4" type="StaticBody" parent="Geometry/Bounds"]
 transform = Transform( 1, 0, 0, 0, 5, 0, 0, 0, 50, 51, 5, 0 )
 
-[node name="MeshInstance" type="MeshInstance" parent="Geometry/Wall4"]
+[node name="MeshInstance" type="MeshInstance" parent="Geometry/Bounds/Wall4"]
 mesh = SubResource( 1 )
 material/0 = ExtResource( 4 )
 
-[node name="CollisionShape" type="CollisionShape" parent="Geometry/Wall4"]
-shape = SubResource( 3 )
-
-[node name="Wall5" type="StaticBody" parent="Geometry"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 2, 0 )
-
-[node name="MeshInstance" type="MeshInstance" parent="Geometry/Wall5"]
-mesh = SubResource( 1 )
-material/0 = ExtResource( 4 )
-
-[node name="CollisionShape" type="CollisionShape" parent="Geometry/Wall5"]
-shape = SubResource( 3 )
-
-[node name="Wall6" type="StaticBody" parent="Geometry"]
-transform = Transform( 1, 0, 0, 0, 2, 0, 0, 0, 1, 7, 3, 0 )
-
-[node name="MeshInstance" type="MeshInstance" parent="Geometry/Wall6"]
-mesh = SubResource( 1 )
-material/0 = ExtResource( 4 )
-
-[node name="CollisionShape" type="CollisionShape" parent="Geometry/Wall6"]
-shape = SubResource( 3 )
-
-[node name="Wall7" type="StaticBody" parent="Geometry"]
-transform = Transform( 4, 0, 0, 0, 2, 0, 0, 0, 4, 5, 3, -11 )
-
-[node name="MeshInstance" type="MeshInstance" parent="Geometry/Wall7"]
-mesh = SubResource( 1 )
-material/0 = ExtResource( 4 )
-
-[node name="CollisionShape" type="CollisionShape" parent="Geometry/Wall7"]
-shape = SubResource( 3 )
-
-[node name="Wall8" type="StaticBody" parent="Geometry"]
-transform = Transform( 7.65013, 0.517638, 0, -2.04985, 1.93185, 0, 0, 0, 4, 16.1721, 0.993118, -11 )
-
-[node name="MeshInstance" type="MeshInstance" parent="Geometry/Wall8"]
-mesh = SubResource( 1 )
-material/0 = ExtResource( 4 )
-
-[node name="CollisionShape" type="CollisionShape" parent="Geometry/Wall8"]
-shape = SubResource( 3 )
-
-[node name="Wall9" type="StaticBody" parent="Geometry"]
-transform = Transform( 4, 0, 0, 0, 1.73205, 2, 0, -1, 3.4641, 4.99469, 1.26541, -17.4807 )
-
-[node name="MeshInstance" type="MeshInstance" parent="Geometry/Wall9"]
-mesh = SubResource( 1 )
-material/0 = ExtResource( 4 )
-
-[node name="CollisionShape" type="CollisionShape" parent="Geometry/Wall9"]
+[node name="CollisionShape" type="CollisionShape" parent="Geometry/Bounds/Wall4"]
 shape = SubResource( 3 )
 
 [node name="Block" parent="Geometry" instance=ExtResource( 1 )]
-transform = Transform( 1, 0, 0, 0, 2, 0, 0, 0, 5, 0, 3, 0 )
+transform = Transform( 8, 0, 0, 0, 2, 0, 0, 0, 8, 0, 2, 0 )
+
+[node name="Block2" parent="Geometry" instance=ExtResource( 1 )]
+transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 8, 9, 2, 16 )
+
+[node name="Block3" parent="Geometry" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 6, 0, 0, 0, 8, -7, 7, 16 )
+
+[node name="Block4" parent="Geometry" instance=ExtResource( 1 )]
+transform = Transform( 0.5, -8.06991, 0, 0.866025, 4.65917, 0, 0, 0, 8, 1.56475, 7.46963, 16 )
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 28.1753, 2.83941, -11.7489 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.585993, 6.8488, 0.363338 )
