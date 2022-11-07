@@ -65,21 +65,12 @@ func _physics_process(delta):
 	var z_movement = visual_root.global_transform.basis.z * input_z
 	var x_movement = visual_root.global_transform.basis.x * input_x
 	var dv = (z_movement + x_movement).normalized()
-	
 	if is_on_floor():
-#		var target_vel = dv * speed
 		var target_vel = Math.get_slope_velocity(dv * speed, get_floor_normal())
 		velocity = velocity.linear_interpolate(target_vel, accel_ground * delta)
-#		velocity = Math.get_slope_velocity(velocity, get_floor_normal())
 		if sqrt(h_vel()) > speed:
 			velocity.x *= speed / sqrt(h_vel())
 			velocity.z *= speed / sqrt(h_vel())
-#
-#		if velocity.dot(get_floor_normal()) > speed: 
-#			velocity *= speed / velocity.dot(get_floor_normal())
-		# prevents sliding down slopes, makes ramp transitions snappier
-#		velocity -= get_floor_normal() * ground_snap * delta
-#		velocity = velocity.slide(get_floor_normal())
 		if Input.is_action_pressed("jump"):
 			velocity.y = jump_force
 			snap = Vector3()
@@ -88,8 +79,6 @@ func _physics_process(delta):
 		if h_vel.dot(dv) <= speed:
 			velocity += dv * (speed - h_vel.dot(dv)) * accel_air * delta
 		velocity.y -= gravity * delta
-	print(h_vel())
-#	velocity = move_and_slide(velocity, Vector3.UP)
 	velocity = move_and_slide_with_snap(velocity, snap, Vector3.UP)
 
 func h_vel():

@@ -82,12 +82,12 @@ _global_script_classes=[ {
 "base": "TestMover",
 "class": "TestGamer",
 "language": "GDScript",
-"path": "res://movement/TestGamer.gd"
+"path": "res://test/TestGamer.gd"
 }, {
 "base": "KinematicBody",
 "class": "TestMover",
 "language": "GDScript",
-"path": "res://movement/TestMover.gd"
+"path": "res://test/TestMover.gd"
 }, {
 "base": "Timer",
 "class": "TimeQueue",
@@ -117,7 +117,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Bulbliterate"
-run/main_scene="res://map/BasicMap.tscn"
+run/main_scene="res://test/TestMap.tscn"
 config/icon="res://icon.png"
 
 [autoload]
