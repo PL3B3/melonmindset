@@ -1,12 +1,15 @@
 extends KinematicBody
 class_name Player
 
+onready var Tracer = preload("res://Tracer.tscn")
 onready var visual_root:Spatial = get_node("VisualRoot")
 onready var camera:Camera = get_node("VisualRoot/Camera")
+onready var ability_root:Spatial = get_node("VisualRoot/Camera/AbilityRoot")
 
 # ----------------------------------------------------------------Input settings
 var mouse_sensitivity := 0.05
-var last_physics_frame_position = Vector3()
+var last_position = Vector3()
+var rng = RandomNumberGenerator.new()
 
 # -------------------------------------------------------------Movement Settings
 var velocity = Vector3()
@@ -20,52 +23,93 @@ var jump_force := gravity * jump_duration
 var ground_snap = 100
 
 func _ready():
+	rng.randomize()
 	visual_root.set_as_toplevel(true)
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 func _unhandled_input(event):
 	if (event is InputEventMouseMotion && Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED):
 		visual_root.rotation_degrees.y -= event.relative.x * mouse_sensitivity
-		camera.rotation_degrees.x = clamp(
-			camera.rotation_degrees.x - (event.relative.y * mouse_sensitivity), -90.0, 90.0
-		)
-	elif event.is_action_pressed("click"):
-		velocity -= 20 * visual_root.global_transform.basis.z
-		velocity.y += 40
+		camera.rotation_degrees.x = clamp(camera.rotation_degrees.x - (event.relative.y * mouse_sensitivity), -90.0, 90.0)
+	
+	elif event.is_action_pressed("toggle_camera"):
+		camera.current = !camera.current
 		
 	elif event.is_action_pressed("toggle_mouse_mode"):
 		if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 		elif Input.get_mouse_mode() == Input.MOUSE_MODE_VISIBLE:
 			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	
+	elif event.is_action_pressed("walk"):
+		Engine.iterations_per_second = 120
 
 func _process(delta):
+	visual_root.global_transform.origin = last_position.linear_interpolate(
+		global_transform.origin, Engine.get_physics_interpolation_fraction())
 	# interpolating what gets rendered between physics frames
-	visual_root.transform.origin = last_physics_frame_position.linear_interpolate(
-		transform.origin, Engine.get_physics_interpolation_fraction())
+#	var position = global_transform.origin
+#	var predicted_position = position + (position - last_position)
+#	visual_root.global_transform.origin = position.linear_interpolate(
+#		predicted_position, Engine.get_physics_interpolation_fraction())
 
+var cooldown = 0
 func _physics_process(delta):
-	print(h_vel(velocity))
+	var snap = Vector3.DOWN
+	cooldown -= delta
+	last_position = global_transform.origin
+	if Input.is_action_pressed("click") and cooldown <= 0:
+		raycast()
 	var input_z = Input.get_action_strength("move_backward") - Input.get_action_strength("move_forward")
 	var input_x = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
 	var z_movement = visual_root.global_transform.basis.z * input_z
 	var x_movement = visual_root.global_transform.basis.x * input_x
 	var dv = (z_movement + x_movement).normalized()
+	
 	if is_on_floor():
-		velocity = velocity.linear_interpolate(dv * speed, accel_ground * delta)
-		if velocity.length() > speed: velocity = velocity.normalized() * speed
+#		var target_vel = dv * speed
+		var target_vel = Math.get_slope_velocity(dv * speed, get_floor_normal())
+		velocity = velocity.linear_interpolate(target_vel, accel_ground * delta)
+#		velocity = Math.get_slope_velocity(velocity, get_floor_normal())
+		if sqrt(h_vel()) > speed:
+			velocity.x *= speed / sqrt(h_vel())
+			velocity.z *= speed / sqrt(h_vel())
+#
+#		if velocity.dot(get_floor_normal()) > speed: 
+#			velocity *= speed / velocity.dot(get_floor_normal())
 		# prevents sliding down slopes, makes ramp transitions snappier
-		velocity -= get_floor_normal() * ground_snap * delta
+#		velocity -= get_floor_normal() * ground_snap * delta
+#		velocity = velocity.slide(get_floor_normal())
 		if Input.is_action_pressed("jump"):
 			velocity.y = jump_force
+			snap = Vector3()
 	else:
-		var y_temp = velocity.y
-		velocity.y = 0
-		if velocity.dot(dv) <= speed:
-			velocity += dv * (speed - velocity.dot(dv)) * accel_air * delta
-		velocity.y = y_temp - gravity * delta
-	velocity = move_and_slide(velocity, Vector3.UP)
-	last_physics_frame_position = transform.origin
+		var h_vel = Vector3(velocity.x, 0, velocity.z)
+		if h_vel.dot(dv) <= speed:
+			velocity += dv * (speed - h_vel.dot(dv)) * accel_air * delta
+		velocity.y -= gravity * delta
+	print(h_vel())
+#	velocity = move_and_slide(velocity, Vector3.UP)
+	velocity = move_and_slide_with_snap(velocity, snap, Vector3.UP)
 
-func h_vel(vec: Vector3):
-	return pow(vec.x, 2) + pow(vec.z, 2)
+func h_vel():
+	return pow(velocity.x, 2) + pow(velocity.z, 2)
+
+var spread = deg2rad(2.5)
+func raycast():
+	cooldown = 0.1
+	var space_state = get_world().direct_space_state
+	var ray_start = camera.global_transform.origin
+	var ray_vec = -200 * camera.global_transform.basis.z
+	ray_vec = ray_vec.rotated(camera.global_transform.basis.x, rng.randf_range(-spread, spread))
+	ray_vec = ray_vec.rotated(camera.global_transform.basis.y, rng.randf_range(-spread, spread))
+	var ray_end = ray_start + ray_vec
+	var result = space_state.intersect_ray(ray_start, ray_end, [self])
+	if result and is_instance_valid(result.collider):
+		print("Hit ", result.collider)
+		ray_end = result.position
+	var tracer = Tracer.instance()
+	tracer.calculate_lifetime((ray_end - ray_start).length())
+	ability_root.add_child(tracer)
+	tracer.look_at(ray_end, Vector3.UP)
+	tracer.set_as_toplevel(true)

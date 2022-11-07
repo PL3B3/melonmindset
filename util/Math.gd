@@ -1,5 +1,4 @@
 extends Object
-
 class_name Math
 
 static func project_onto_plane_along_axis(vector:Vector3, normal:Vector3, 
@@ -33,6 +32,9 @@ axis:int) -> Vector3:
 			projected.y = -projected.dot(normal) / normal.y
 	
 	return projected
+
+static func get_slope_velocity(velocity:Vector3, normal:Vector3):
+	return project_onto_plane_along_axis(velocity, normal, 1)
 
 static func deg_to_deg360(deg : float):
 	deg = fmod(deg, 360.0)

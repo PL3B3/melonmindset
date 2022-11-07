@@ -1,6 +1,6 @@
 extends Node
 
-var goodwater_map = preload("res://common/map/Goodwater.tscn")
+var goodwater_map = preload("res://map/Goodwater.tscn")
 
 func _on_ButtonServer_pressed():
 	Network.start_network(true)
