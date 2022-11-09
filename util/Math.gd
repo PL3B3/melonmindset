@@ -33,7 +33,10 @@ axis:int) -> Vector3:
 	
 	return projected
 
-static func get_slope_velocity(velocity:Vector3, normal:Vector3):
+static func get_slope_velocity(velocity:Vector3, normal:Vector3) -> Vector3:
+	"""
+	preserves horizontal component of velocity when moving on a slope
+	"""
 	return project_onto_plane_along_axis(velocity, normal, 1)
 
 static func deg_to_deg360(deg : float):

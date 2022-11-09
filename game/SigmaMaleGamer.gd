@@ -1,6 +1,6 @@
 extends KinematicBody
 
-var enabled = false
+var enabled = true
 var rng = RandomNumberGenerator.new()
 var ticks_until_next_vel_change = 200
 var last_pos:Vector3

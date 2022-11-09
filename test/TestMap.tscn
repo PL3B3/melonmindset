@@ -1,14 +1,9 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://materials/PrototypeMaterial.tres" type="Material" id=1]
 [ext_resource path="res://map/environment.tres" type="Environment" id=2]
 [ext_resource path="res://map/Block.tscn" type="PackedScene" id=3]
 [ext_resource path="res://test/ReconciliationTest.tscn" type="PackedScene" id=4]
-[ext_resource path="res://Player.tscn" type="PackedScene" id=5]
-
-[sub_resource type="CubeMesh" id=1]
-
-[sub_resource type="BoxShape" id=3]
+[ext_resource path="res://scenes/Player.tscn" type="PackedScene" id=5]
 
 [node name="TestMap" type="Spatial"]
 
@@ -21,82 +16,66 @@ directional_shadow_mode = 0
 
 [node name="Geometry" type="Spatial" parent="."]
 
-[node name="Bounds" type="Spatial" parent="Geometry"]
-
-[node name="Floor" type="StaticBody" parent="Geometry/Bounds"]
-transform = Transform( 50, 0, 0, 0, 1, 0, 0, 0, 50, 0, 0, 0 )
-collision_mask = 3
-
-[node name="MeshInstance" type="MeshInstance" parent="Geometry/Bounds/Floor"]
-mesh = SubResource( 1 )
-material/0 = ExtResource( 1 )
-
-[node name="CollisionShape" type="CollisionShape" parent="Geometry/Bounds/Floor"]
-shape = SubResource( 3 )
-
-[node name="Wall" type="StaticBody" parent="Geometry/Bounds"]
-transform = Transform( 50, 0, 0, 0, 5, 0, 0, 0, 1, 0, 5, -51 )
-
-[node name="MeshInstance" type="MeshInstance" parent="Geometry/Bounds/Wall"]
-mesh = SubResource( 1 )
-material/0 = ExtResource( 1 )
-
-[node name="CollisionShape" type="CollisionShape" parent="Geometry/Bounds/Wall"]
-shape = SubResource( 3 )
-
-[node name="Wall2" type="StaticBody" parent="Geometry/Bounds"]
-transform = Transform( 50, 0, 0, 0, 5, 0, 0, 0, 1, 0, 5, 51 )
-
-[node name="MeshInstance" type="MeshInstance" parent="Geometry/Bounds/Wall2"]
-mesh = SubResource( 1 )
-material/0 = ExtResource( 1 )
-
-[node name="CollisionShape" type="CollisionShape" parent="Geometry/Bounds/Wall2"]
-shape = SubResource( 3 )
-
-[node name="Wall3" type="StaticBody" parent="Geometry/Bounds"]
-transform = Transform( 1, 0, 0, 0, 5, 0, 0, 0, 50, -51, 5, 0 )
-
-[node name="MeshInstance" type="MeshInstance" parent="Geometry/Bounds/Wall3"]
-mesh = SubResource( 1 )
-material/0 = ExtResource( 1 )
-
-[node name="CollisionShape" type="CollisionShape" parent="Geometry/Bounds/Wall3"]
-shape = SubResource( 3 )
-
-[node name="Wall4" type="StaticBody" parent="Geometry/Bounds"]
-transform = Transform( 1, 0, 0, 0, 5, 0, 0, 0, 50, 51, 5, 0 )
-
-[node name="MeshInstance" type="MeshInstance" parent="Geometry/Bounds/Wall4"]
-mesh = SubResource( 1 )
-material/0 = ExtResource( 1 )
-
-[node name="CollisionShape" type="CollisionShape" parent="Geometry/Bounds/Wall4"]
-shape = SubResource( 3 )
-
-[node name="Plat" parent="Geometry" instance=ExtResource( 3 )]
-transform = Transform( 8, 0, 0, 0, 2, 0, 0, 0, 8, 0, 2, 0 )
-
-[node name="LowWall" parent="Geometry" instance=ExtResource( 3 )]
-transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 8, 9, 2, 16 )
-
-[node name="HighWall" parent="Geometry" instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 6, 0, 0, 0, 8, -7, 7, 16 )
-
-[node name="Ramp" parent="Geometry" instance=ExtResource( 3 )]
-transform = Transform( 0.5, -8.06991, 0, 0.866025, 4.65917, 0, 0, 0, 8, 1.56475, 7.46963, 16 )
+[node name="Floor" parent="Geometry" instance=ExtResource( 3 )]
+transform = Transform( 50, 0, 0, 0, 2, 0, 0, 0, 20, 0, -4, 0 )
 
 [node name="Target" parent="Geometry" instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -23 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2, -1, -4 )
 
-[node name="Target2" parent="Geometry" instance=ExtResource( 3 )]
-transform = Transform( 0.698432, 0.348058, -0.625338, -0.446026, 0.89502, 0, 0.55969, 0.278917, 0.780354, 0, 2, -14 )
+[node name="Obstacles1" type="Spatial" parent="Geometry"]
 
-[node name="Target3" parent="Geometry" instance=ExtResource( 3 )]
-transform = Transform( 0.698432, 0.348058, -0.625338, -0.615432, 0.738076, -0.276562, 0.365288, 0.578013, 0.729703, 2.76628, 2, -12.849 )
+[node name="LowWall" parent="Geometry/Obstacles1" instance=ExtResource( 3 )]
+transform = Transform( 1.54607, 0.856609, 3.74356, -0.732805, 1.80727, -1.77437, -1.0357, 0, 6.84378, -1.66987, 1.45247, 12.3071 )
 
-[node name="Target4" parent="Geometry" instance=ExtResource( 3 )]
-transform = Transform( 1.7, 0, 0, 0, 0.433013, 1.6, 0, -0.25, 2.77128, 4.31117, 2.02478, -12.8525 )
+[node name="LowWall2" parent="Geometry/Obstacles1" instance=ExtResource( 3 )]
+transform = Transform( 0.89877, -0.0737349, -7.14062, -0.732805, 1.80727, -1.77437, 1.62948, 0.853429, 3.14057, -1.89098, 1.4766, 12.3007 )
+
+[node name="HighWall" parent="Geometry/Obstacles1" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 6, 0, 0, 0, 8, -5.60542, 0.149461, 8.57798 )
+
+[node name="Ramp" parent="Geometry/Obstacles1" instance=ExtResource( 3 )]
+transform = Transform( 0.5, -8.06991, 0, 0.866025, 4.65917, 0, 0, 0, 8, 1.56475, 3.91925, 11.5774 )
+
+[node name="Diag" parent="Geometry/Obstacles1" instance=ExtResource( 3 )]
+transform = Transform( 0.698432, 0.348058, -0.625338, -0.446026, 0.89502, 0, 0.55969, 0.278917, 0.780354, -2, -1, 5 )
+
+[node name="Diag2" parent="Geometry/Obstacles1" instance=ExtResource( 3 )]
+transform = Transform( 0.698432, 0.348058, -0.625338, -0.615432, 0.738076, -0.276562, 0.365288, 0.578013, 0.729703, 0.76628, -1, 6.93066 )
+
+[node name="MiniRamp" parent="Geometry/Obstacles1" instance=ExtResource( 3 )]
+transform = Transform( 1.7, 0, 0, 0, 0.433013, 1.6, 0, -0.25, 2.77128, 2.31117, -0.97522, 6.1475 )
+
+[node name="Obstacles2" type="Spatial" parent="Geometry"]
+
+[node name="Plat" parent="Geometry/Obstacles2" instance=ExtResource( 3 )]
+transform = Transform( 5, 0, 0, 0, 3, 0, 0, 0, 5, -20, 1, 11 )
+
+[node name="Plat2" parent="Geometry/Obstacles2" instance=ExtResource( 3 )]
+transform = Transform( 5, 0, 0, 0, 2, 0, 0, 0, 5, -30, 0, 5 )
+
+[node name="Ramp2" parent="Geometry/Obstacles2" instance=ExtResource( 3 )]
+transform = Transform( 5, 0, 0, 0, 0.866025, 2.5, 0, -0.5, 4.33013, -20, 0.603183, 2.17694 )
+
+[node name="Obstacles3" type="Spatial" parent="Geometry"]
+
+[node name="Plat" parent="Geometry/Obstacles3" instance=ExtResource( 3 )]
+transform = Transform( 5, 0, 0, 0, 3, 0, 0, 0, 1, 31, 1, 8 )
+
+[node name="Plat5" parent="Geometry/Obstacles3" instance=ExtResource( 3 )]
+transform = Transform( 5, 0, 0, 0, 3, 0, 0, 0, 1, 31, 1, -3 )
+
+[node name="Plat2" parent="Geometry/Obstacles3" instance=ExtResource( 3 )]
+transform = Transform( -2.18557e-07, 0, 1, 0, 3, 0, -5, 0, -4.37114e-08, 37, 1, 3 )
+
+[node name="Plat3" parent="Geometry/Obstacles3" instance=ExtResource( 3 )]
+transform = Transform( -2.18557e-07, 0, 1, 0, 3, 0, -5, 0, -4.37114e-08, 25, 1, 3 )
+
+[node name="Plat4" parent="Geometry/Obstacles3" instance=ExtResource( 3 )]
+transform = Transform( 5, 0, 0, 0, 1, 0, 0, 0, 5, 31, 5, 3 )
+visible = false
+
+[node name="Plat6" parent="Geometry/Obstacles3" instance=ExtResource( 3 )]
+transform = Transform( 5, 0, 0, 0, 2, 0, 0, 0, 1, 31, -1, -5 )
 
 [node name="Camera" type="Camera" parent="."]
 transform = Transform( -1, 0, -8.74228e-08, -7.29536e-08, 0.55102, 0.834492, 4.81717e-08, 0.834492, -0.55102, 0, 10.4709, -22 )
@@ -104,7 +83,7 @@ transform = Transform( -1, 0, -8.74228e-08, -7.29536e-08, 0.55102, 0.834492, 4.8
 [node name="Target2" parent="Camera" instance=ExtResource( 3 )]
 
 [node name="KinematicBody" parent="." instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.50862, 2.44179, -17.9913 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 31, 0, 0 )
 
 [node name="Player" parent="." instance=ExtResource( 5 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.07603, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 7.076, 0 )

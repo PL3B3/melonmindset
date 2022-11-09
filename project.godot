@@ -62,7 +62,7 @@ _global_script_classes=[ {
 "base": "KinematicBody",
 "class": "Player",
 "language": "GDScript",
-"path": "res://Player.gd"
+"path": "res://scenes/Player.gd"
 }, {
 "base": "Reference",
 "class": "PoolBuffer",
@@ -213,6 +213,7 @@ ability_previous={
 
 [physics]
 
+common/physics_fps=100
 common/physics_jitter_fix=0.0
 3d/physics_engine="GodotPhysics"
 3d/active_soft_world=false

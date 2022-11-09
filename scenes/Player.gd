@@ -1,7 +1,7 @@
 extends KinematicBody
 class_name Player
 
-onready var Tracer = preload("res://Tracer.tscn")
+onready var Tracer = preload("res://scenes/Tracer.tscn")
 onready var visual_root:Spatial = get_node("VisualRoot")
 onready var camera:Camera = get_node("VisualRoot/Camera")
 onready var ability_root:Spatial = get_node("VisualRoot/Camera/AbilityRoot")
@@ -42,7 +42,7 @@ func _unhandled_input(event):
 			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	
 	elif event.is_action_pressed("walk"):
-		Engine.iterations_per_second = 120
+		Engine.time_scale = 0.5 / Engine.time_scale
 
 func _process(delta):
 	visual_root.global_transform.origin = last_position.linear_interpolate(
@@ -84,9 +84,9 @@ func _physics_process(delta):
 func h_vel():
 	return pow(velocity.x, 2) + pow(velocity.z, 2)
 
-var spread = deg2rad(2.5)
+var spread = deg2rad(1.5)
 func raycast():
-	cooldown = 0.1
+	cooldown = 0.05
 	var space_state = get_world().direct_space_state
 	var ray_start = camera.global_transform.origin
 	var ray_vec = -200 * camera.global_transform.basis.z
@@ -95,7 +95,7 @@ func raycast():
 	var ray_end = ray_start + ray_vec
 	var result = space_state.intersect_ray(ray_start, ray_end, [self])
 	if result and is_instance_valid(result.collider):
-		print("Hit ", result.collider)
+#		print("Hit ", result.collider)
 		ray_end = result.position
 	var tracer = Tracer.instance()
 	tracer.calculate_lifetime((ray_end - ray_start).length())
