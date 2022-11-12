@@ -1,8 +1,8 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://test/Test.gd" type="Script" id=1]
+[ext_resource path="res://test/TransformTest.gd" type="Script" id=1]
 
-[node name="Test" type="Spatial"]
+[node name="TransformTest" type="Spatial"]
 script = ExtResource( 1 )
 
 [node name="Camera" type="Camera" parent="."]

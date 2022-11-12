@@ -1,9 +1,12 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://Player.gd" type="Script" id=1]
+[ext_resource path="res://scenes/Player.gd" type="Script" id=1]
 [ext_resource path="res://materials/proto_orange.png" type="Texture" id=2]
 
-[sub_resource type="BoxShape" id=4]
+[sub_resource type="SphereShape" id=6]
+
+[sub_resource type="BoxShape" id=5]
+extents = Vector3( 0.707, 0.5, 0.707 )
 
 [sub_resource type="CubeMesh" id=2]
 
@@ -13,15 +16,24 @@ roughness = 0.5
 uv1_triplanar = true
 
 [node name="Player" type="KinematicBody"]
-collision/safe_margin = 0.01
+collision/safe_margin = 0.005
 script = ExtResource( 1 )
 
-[node name="Collider" type="CollisionShape" parent="."]
-shape = SubResource( 4 )
+[node name="BodyCollider" type="CollisionShape" parent="."]
+shape = SubResource( 6 )
+
+[node name="FeetCollider" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0 )
+shape = SubResource( 5 )
+
+[node name="FeetCollider2" type="CollisionShape" parent="."]
+transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, -0.5, 0 )
+shape = SubResource( 5 )
 
 [node name="VisualRoot" type="Spatial" parent="."]
 
 [node name="MeshInstance" type="MeshInstance" parent="VisualRoot"]
+visible = false
 mesh = SubResource( 2 )
 material/0 = SubResource( 3 )
 
@@ -37,4 +49,4 @@ opacity = 0.4
 texture = ExtResource( 2 )
 
 [node name="AbilityRoot" type="Spatial" parent="VisualRoot/Camera"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, -0.5 )
