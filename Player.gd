@@ -42,7 +42,8 @@ func _unhandled_input(event):
 			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	
 	elif event.is_action_pressed("walk"):
-		Engine.iterations_per_second = 120
+		Engine.iterations_per_second = 7200 / Engine.iterations_per_second
+#		Engine.time_scale = 0.5 / Engine.time_scale
 
 func _process(delta):
 	visual_root.global_transform.origin = last_position.linear_interpolate(
@@ -55,6 +56,7 @@ func _process(delta):
 
 var cooldown = 0
 func _physics_process(delta):
+	print(delta)
 	var snap = Vector3.DOWN
 	cooldown -= delta
 	last_position = global_transform.origin

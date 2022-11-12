@@ -126,6 +126,8 @@ Network="*res://networking/Network.gd"
 
 [display]
 
+window/size/width=100
+window/size/height=100
 window/vsync/use_vsync=false
 
 [input]
@@ -213,6 +215,7 @@ ability_previous={
 
 [physics]
 
+common/physics_fps=30
 common/physics_jitter_fix=0.0
 3d/physics_engine="GodotPhysics"
 3d/active_soft_world=false
