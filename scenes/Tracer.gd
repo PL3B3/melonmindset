@@ -1,7 +1,7 @@
 extends Spatial
 
 var rng = RandomNumberGenerator.new()
-var length:float = 4.0
+var length:float = 8.0
 var speed:float = 400.0
 var lifetime:float = 1.0
 
