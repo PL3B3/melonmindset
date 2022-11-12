@@ -126,8 +126,6 @@ Network="*res://networking/Network.gd"
 
 [display]
 
-window/size/width=100
-window/size/height=100
 window/vsync/use_vsync=false
 
 [input]
