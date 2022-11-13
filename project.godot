@@ -124,6 +124,11 @@ config/icon="res://icon.png"
 
 Network="*res://networking/Network.gd"
 
+[debug]
+
+settings/fps/force_fps=60
+settings/stdout/print_fps=true
+
 [display]
 
 window/vsync/use_vsync=false
@@ -217,12 +222,13 @@ file_logging/enable_file_logging=true
 
 [physics]
 
-common/physics_fps=100
+common/physics_fps=90
 common/physics_jitter_fix=0.0
 3d/physics_engine="GodotPhysics"
 3d/active_soft_world=false
 
 [rendering]
 
+quality/driver/driver_name="GLES2"
 quality/filters/msaa=2
 environment/default_environment="res://default_env.tres"

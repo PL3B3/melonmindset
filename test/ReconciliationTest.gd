@@ -4,8 +4,8 @@ var test_iterations:int = 100
 var speed:float = 15
 var moves = []
 var moves_idx = 0
-var moves_count = 5
-var repeat_count = 5
+var moves_count = 2
+var repeat_count = 6
 var last_moves = moves
 var rng = RandomNumberGenerator.new()
 var results = []
@@ -34,11 +34,12 @@ func _unhandled_input(event):
 		press_time = OS.get_ticks_usec()
 
 func _physics_process(delta):
-	if press_time:
-		print(OS.get_ticks_usec() - press_time)
-		press_time = 0
-#	for move in moves:
-#		move_and_slide(move, Vector3.UP)
+	moves = get_moves()
+	for move in moves:
+		move_and_slide(move, Vector3.UP)
+#	if press_time:
+#		print(OS.get_ticks_usec() - press_time)
+#		press_time = 0
 #	test_reconciliation()
 #	test_delta_compensation()
 
@@ -82,37 +83,20 @@ func test_reconciliation():
 #			print("Move position: %s" % transform.origin)
 			transform.origin = pos_at_begin
 			force_update_transform()
-			for i in 100:
-				var a = 3 + 2
-#			for move in moves:
-#				move_and_slide(move, Vector3.UP)
+#			for i in 100:
+#				var a = 3 + 2
+			for move in moves:
+				move_and_slide(move, Vector3.UP)
 #				move_and_slide_with_snap(move, Vector3.DOWN, Vector3.UP)
 #			print("Calc position: %s" % transform.origin)
 			results.push_back((transform.origin - final_position).length())
 			if test_iterations == 0:
 				results.sort()
 				results.invert()
-#				print(results)
+				print(results)
 				queue_free()
 			pos_at_begin = transform.origin
 			moves = get_moves()
 			moves_idx = 0
 			test_iterations -= 1
 #			if test_iterations % 10 == 0: print(test_iterations)
-	
-	
-#	if not moves.empty():
-#		move_and_slide_with_snap(moves.pop_back(), Vector3.DOWN)
-#		if moves.empty():
-#			var final_position = transform.origin
-#			print("Move position: %s" % transform.origin)
-#			transform.origin = pos_at_begin
-#			force_update_transform()
-#			for i in range(last_moves.size() - 1, -1, -1):
-#				move_and_slide_with_snap(last_moves[i], Vector3.DOWN)
-#			print("Calc position: %s" % transform.origin)
-#			print("Discrepancy: %s" % (transform.origin - final_position).length())
-#	if Input.is_action_just_pressed("click"):
-#		moves = get_moves()
-#		last_moves = moves.duplicate()
-#		pos_at_begin = transform.origin

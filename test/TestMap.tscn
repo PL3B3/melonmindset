@@ -1,9 +1,10 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://materials/PrototypeMaterial.tres" type="Material" id=1]
 [ext_resource path="res://map/environment.tres" type="Environment" id=2]
 [ext_resource path="res://map/Block.tscn" type="PackedScene" id=3]
 [ext_resource path="res://test/ReconciliationTest.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/Player.tscn" type="PackedScene" id=5]
 [ext_resource path="res://arms/assets/m0DefaultMaterial.material" type="Material" id=6]
 
 [sub_resource type="CylinderShape" id=1]
@@ -237,4 +238,7 @@ transform = Transform( -1, 0, -8.74228e-08, -7.29536e-08, 0.55102, 0.834492, 4.8
 [node name="Target2" parent="Camera" instance=ExtResource( 3 )]
 
 [node name="TestBody" parent="." instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.23113, 1.09269, 0.0512799 )
+
+[node name="Player" parent="." instance=ExtResource( 5 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.93617, 0 )

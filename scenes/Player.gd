@@ -73,8 +73,8 @@ func _physics_process(delta):
 			velocity.x *= max_ground_speed / h_vel()
 			velocity.z *= max_ground_speed / h_vel()
 		if Input.is_action_pressed("jump"):
-			velocity.y = jump_force * 3
-			velocity -= 30 * visual_root.global_transform.basis.z
+			velocity.y = jump_force
+#			velocity -= 30 * visual_root.global_transform.basis.z
 			snap = Vector3()
 	else:
 		var h_vel = Vector3(velocity.x, 0, velocity.z)
