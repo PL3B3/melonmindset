@@ -4,6 +4,7 @@ class_name Player
 onready var Tracer = preload("res://scenes/Tracer.tscn")
 onready var visual_root:Spatial = get_node("VisualRoot")
 onready var camera:Camera = get_node("VisualRoot/Camera")
+onready var mesh:MeshInstance = get_node("VisualRoot/Body")
 onready var ability_root:Spatial = get_node("VisualRoot/Camera/AbilityRoot")
 
 # ----------------------------------------------------------------Input settings
@@ -32,6 +33,7 @@ func _unhandled_input(event):
 	if (event is InputEventMouseMotion && Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED):
 		visual_root.rotation_degrees.y -= event.relative.x * mouse_sensitivity
 		camera.rotation_degrees.x = clamp(camera.rotation_degrees.x - (event.relative.y * mouse_sensitivity), -90.0, 90.0)
+		mesh.rotation_degrees.x = camera.rotation_degrees.x
 	
 	elif event.is_action_pressed("toggle_camera"):
 		camera.current = !camera.current
@@ -46,9 +48,9 @@ func _unhandled_input(event):
 		Engine.time_scale = 0.2 / Engine.time_scale
 
 func _process(delta):
+	# interpolating what gets rendered between physics frames
 	visual_root.global_transform.origin = last_position.linear_interpolate(
 		global_transform.origin, Engine.get_physics_interpolation_fraction())
-	# interpolating what gets rendered between physics frames
 #	var position = global_transform.origin
 #	var predicted_position = position + (position - last_position)
 #	visual_root.global_transform.origin = position.linear_interpolate(

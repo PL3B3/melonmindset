@@ -118,7 +118,6 @@ _global_script_class_icons={
 
 config/name="Bulbliterate"
 run/main_scene="res://test/TestMap.tscn"
-config/icon="res://icon.png"
 
 [autoload]
 
@@ -126,7 +125,7 @@ Network="*res://networking/Network.gd"
 
 [debug]
 
-settings/fps/force_fps=60
+settings/fps/force_fps=120
 settings/stdout/print_fps=true
 
 [display]
@@ -222,13 +221,10 @@ file_logging/enable_file_logging=true
 
 [physics]
 
-common/physics_fps=90
 common/physics_jitter_fix=0.0
 3d/physics_engine="GodotPhysics"
 3d/active_soft_world=false
 
 [rendering]
 
-quality/driver/driver_name="GLES2"
 quality/filters/msaa=2
-environment/default_environment="res://default_env.tres"

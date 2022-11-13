@@ -8,7 +8,7 @@
 [sub_resource type="CubeMesh" id=2]
 size = Vector3( 1.4, 1, 1.4 )
 
-[sub_resource type="SphereShape" id=5]
+[sub_resource type="BoxShape" id=5]
 
 [sub_resource type="BoxShape" id=4]
 extents = Vector3( 0.707, 0.5, 0.707 )
@@ -37,7 +37,9 @@ shape = SubResource( 5 )
 [node name="FeetCollider2" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0 )
 shape = SubResource( 4 )
+disabled = true
 
 [node name="FeetCollider3" type="CollisionShape" parent="."]
 transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, -0.5, 0 )
 shape = SubResource( 4 )
+disabled = true
