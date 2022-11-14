@@ -5,7 +5,7 @@ var projectile = preload("res://arms/BaseProjectile.tscn")
 func init():
 	fire_rate_default = 0.6
 	reload_time_default = 1.2
-	clip_size_default = 4
+	clip_size_default = 40
 	clip_remaining = clip_size_default
 	ammo_default = 200
 	ammo_remaining = ammo_default

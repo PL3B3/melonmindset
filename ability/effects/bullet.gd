@@ -1,3 +1,3 @@
 extends Node
 
-onready var Tracer = preload("res://Tracer.tscn")
+onready var Tracer = preload("res://scenes/Tracer.tscn")

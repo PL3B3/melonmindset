@@ -15,3 +15,9 @@ material/0 = ExtResource( 4 )
 
 [node name="FirePoint" parent="." index="1"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.316648, -0.730365 )
+
+[node name="FireAudioPlayer" parent="FirePoint" index="0"]
+bus = "Weapon"
+
+[node name="LoadAudioPlayer" parent="FirePoint" index="1"]
+bus = "Weapon"

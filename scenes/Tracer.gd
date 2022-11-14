@@ -1,24 +1,30 @@
 extends Spatial
 
+onready var mesh = get_node("Mesh")
 var rng = RandomNumberGenerator.new()
+var max_length:float = 100.0
 var length:float = 8.0
 var speed:float = 400.0
-var lifetime:float = 1.0
+var target:Vector3
+var lifetime:float = 0.3
 
-func calculate_lifetime(travel_distance: float):
-	rng.randomize()
-	speed *= rng.randf_range(0.5, 1.0)
-	length = rng.randf_range(0.5, 1.0) * min(0.5 * travel_distance, length)
-	lifetime = min((travel_distance - 2 * length) / speed, lifetime)
+func instantiate(start:Vector3, end:Vector3):
+	length = min(max_length, (end - start).length())
+	target = end
 
 func _ready():
-	$MeshInstance.transform.origin.z -= length
-	$MeshInstance.scale.z = length
-	
+	rng.randomize()
+	look_at(target, Vector3.UP)
+	set_as_toplevel(true)
+	speed *= rng.randf_range(0.2, 1.0)
+	$Mesh.transform.origin.z -= 0.5 * length
+	$Mesh.scale.z = length
+	$Mesh.scale.x *= rng.randf_range(0.5, 3.0)
+	$Mesh.scale.y *= rng.randf_range(0.5, 3.0)
 
 func _physics_process(delta):
 	lifetime -= delta
-	if lifetime < 0:
+	$Mesh.scale.z -= delta * speed
+	$Mesh.transform.origin.z -= 0.5 * delta * speed
+	if lifetime <= 0 or $Mesh.scale.z <= 0:
 		queue_free()
-	transform.origin -= global_transform.basis.z * speed * delta
-

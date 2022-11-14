@@ -1,11 +1,11 @@
 extends KinematicBody
 
-var test_iterations:int = 100
-var speed:float = 15
+var test_iterations:int = 1000
+var speed:float = 150
 var moves = []
 var moves_idx = 0
-var moves_count = 5
-var repeat_count = 5
+var moves_count = 10
+var repeat_count = 2
 var last_moves = moves
 var rng = RandomNumberGenerator.new()
 var results = []
@@ -34,9 +34,12 @@ func _unhandled_input(event):
 		press_time = OS.get_ticks_usec()
 
 func _physics_process(delta):
-	moves = get_moves()
-	for move in moves:
-		move_and_slide(move, Vector3.UP)
+	if moves:
+		move_and_slide(moves.pop_back(), Vector3.UP)
+	else:
+		moves = get_moves()
+#	for move in moves:
+#		move_and_slide(move, Vector3.UP)
 #	if press_time:
 #		print(OS.get_ticks_usec() - press_time)
 #		press_time = 0

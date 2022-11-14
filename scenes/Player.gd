@@ -6,6 +6,8 @@ onready var visual_root:Spatial = get_node("VisualRoot")
 onready var camera:Camera = get_node("VisualRoot/Camera")
 onready var mesh:MeshInstance = get_node("VisualRoot/Body")
 onready var ability_root:Spatial = get_node("VisualRoot/Camera/AbilityRoot")
+onready var anim:AnimationPlayer = get_node("Anim")
+onready var shotgun = get_node("VisualRoot/Camera/AbilityRoot/Shotgun")
 
 # ----------------------------------------------------------------Input settings
 var mouse_sensitivity := 0.05
@@ -15,7 +17,7 @@ var rng = RandomNumberGenerator.new()
 # -------------------------------------------------------------Movement Settings
 var velocity = Vector3()
 var speed: float = 10.0
-var bhop_max_added_speed:float = speed * 0.05
+var bhop_max_added_speed:float = speed * 0.2
 var max_ground_speed:float = speed + bhop_max_added_speed
 var accel_air:float = 5.0
 var accel_ground:float= 12.0
@@ -28,6 +30,8 @@ func _ready():
 	rng.randomize()
 	visual_root.set_as_toplevel(true)
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	shotgun.player = self
+	shotgun.ignored_objects.append(self)
 
 func _unhandled_input(event):
 	if (event is InputEventMouseMotion && Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED):
@@ -46,11 +50,15 @@ func _unhandled_input(event):
 	
 	elif event.is_action_pressed("walk"):
 		Engine.time_scale = 0.2 / Engine.time_scale
+	
+	elif event.is_action_pressed("ability_0"):
+		print("press")
 
 func _process(delta):
 	# interpolating what gets rendered between physics frames
 	visual_root.global_transform.origin = last_position.linear_interpolate(
 		global_transform.origin, Engine.get_physics_interpolation_fraction())
+	shotgun.render()
 #	var position = global_transform.origin
 #	var predicted_position = position + (position - last_position)
 #	visual_root.global_transform.origin = position.linear_interpolate(
@@ -61,13 +69,12 @@ func _physics_process(delta):
 	var snap = Vector3.DOWN * 0.1
 	cooldown -= delta
 	last_position = global_transform.origin
-	if Input.is_action_pressed("click") and cooldown <= 0:
-		raycast()
 	var input_z = Input.get_action_strength("move_backward") - Input.get_action_strength("move_forward")
 	var input_x = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
 	var z_movement = visual_root.global_transform.basis.z * input_z
 	var x_movement = visual_root.global_transform.basis.x * input_x
 	var dv = (z_movement + x_movement).normalized()
+	var h_vel = Vector3(velocity.x, 0, velocity.z)
 	if is_on_floor():
 		var target_vel = Math.get_slope_velocity(dv * speed, get_floor_normal())
 		velocity = velocity.linear_interpolate(target_vel, accel_ground * delta)
@@ -79,20 +86,23 @@ func _physics_process(delta):
 #			velocity -= 30 * visual_root.global_transform.basis.z
 			snap = Vector3()
 	else:
-		var h_vel = Vector3(velocity.x, 0, velocity.z)
 		if h_vel.dot(dv) <= speed:
 			velocity += dv * (speed - h_vel.dot(dv)) * accel_air * delta
 		velocity.y -= gravity * delta
-#	print(h_vel())
 	velocity = move_and_slide_with_snap(velocity, snap, Vector3.UP)
 #	velocity = move_and_slide(velocity, Vector3.UP)
+	if h_vel() > 0.05:
+		anim.play("Run")
+	elif anim.current_animation:
+		anim.play("Idle")
+
 
 func h_vel():
 	return sqrt(pow(velocity.x, 2) + pow(velocity.z, 2))
 
-var spread = deg2rad(0.0)
+var spread = deg2rad(0.5)
 func raycast():
-	cooldown = 0.05
+	cooldown = 0.1
 	var space_state = get_world().direct_space_state
 	var ray_start = camera.global_transform.origin
 	var ray_vec = -200 * camera.global_transform.basis.z
@@ -104,7 +114,7 @@ func raycast():
 #		print("Hit ", result.collider)
 		ray_end = result.position
 	var tracer = Tracer.instance()
-	tracer.calculate_lifetime((ray_end - ray_start).length())
+	tracer.instantiate(ability_root.global_transform.origin, ray_end)
 	ability_root.add_child(tracer)
 	tracer.look_at(ray_end, Vector3.UP)
 	tracer.set_as_toplevel(true)

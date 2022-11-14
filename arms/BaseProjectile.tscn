@@ -39,7 +39,6 @@ shape = SubResource( 1 )
 
 [node name="Mesh" type="MeshInstance" parent="Shape"]
 mesh = SubResource( 3 )
-material/0 = null
 
 [node name="Outline" type="MeshInstance" parent="Shape/Mesh"]
 mesh = SubResource( 4 )

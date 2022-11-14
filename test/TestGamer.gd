@@ -2,7 +2,7 @@ extends TestMover
 
 class_name TestGamer
 
-onready var target = preload("res://common/game/Target.tscn")
+onready var target = preload("res://game/Target.tscn")
 
 enum STATE {
 	POSITION,
