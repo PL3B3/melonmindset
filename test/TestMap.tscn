@@ -32,7 +32,6 @@ environment = ExtResource( 2 )
 transform = Transform( 0.958584, -0.121085, 0.257788, -0.13813, 0.593897, 0.792595, -0.249071, -0.795377, 0.552575, 0, 0, 0 )
 light_energy = 2.0
 shadow_enabled = true
-directional_shadow_mode = 0
 
 [node name="Geometry" type="Spatial" parent="."]
 
@@ -81,7 +80,10 @@ transform = Transform( 5, 0, 0, 0, 0.866025, 2.5, 0, -0.5, 4.33013, -20, 0.62232
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -39 )
 
 [node name="Ramp2" parent="Geometry/Obstacles5" instance=ExtResource( 3 )]
-transform = Transform( 16.8, 0, 0, 0, 0.707106, 3.53554, 0, -0.707106, 3.53554, 18, 0.622322, 0.16106 )
+transform = Transform( 5.04, 0, 0, 0, 0.707106, 3.53554, 0, -0.707106, 3.53554, 7, 0.622322, 0.16106 )
+
+[node name="Ramp5" parent="Geometry/Obstacles5" instance=ExtResource( 3 )]
+transform = Transform( 5.04, 0, 0, 0, 3.53553, 3.53553, 0, -3.53553, 3.53553, 17, -1.499, 2.28238 )
 
 [node name="Ramp3" parent="Geometry/Obstacles5" instance=ExtResource( 3 )]
 transform = Transform( 7.12764, 0.707106, -1.54543e-07, 0, -4.37113e-08, -5.00001, -7.12764, 0.707106, -1.54543e-07, -16, 0.622322, 4.16106 )

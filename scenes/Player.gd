@@ -66,7 +66,7 @@ func _process(delta):
 
 var cooldown = 0
 func _physics_process(delta):
-	var snap = Vector3.DOWN * 0.1
+	var snap = Vector3.DOWN * 0.5
 	cooldown -= delta
 	last_position = global_transform.origin
 	var input_z = Input.get_action_strength("move_backward") - Input.get_action_strength("move_forward")

@@ -141,7 +141,7 @@ material/0 = SubResource( 10 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0 )
 cull_mask = 1048573
 current = true
-fov = 90.0
+fov = 80.0
 far = 200.0
 
 [node name="Crosshair" type="Sprite3D" parent="VisualRoot/Camera"]

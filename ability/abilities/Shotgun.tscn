@@ -30,4 +30,5 @@ anims/Recoil = SubResource( 1 )
 [node name="AudioPlayer" type="AudioStreamPlayer3D" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.139145, -0.461051 )
 unit_size = 10.0
+pitch_scale = 0.85
 bus = "Bass Boost"

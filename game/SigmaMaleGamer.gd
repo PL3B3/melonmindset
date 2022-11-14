@@ -3,9 +3,9 @@ extends KinematicBody
 var enabled = true
 var rng = RandomNumberGenerator.new()
 var last_pos:Vector3
-var speed := 1.0
+var speed := 15.0
 var velocity = Vector3.FORWARD * speed
-var jump_height := 0.5
+var jump_height := 4.5
 var jump_duration := 0.45
 var gravity := (2.0 * jump_height) / (pow(jump_duration, 2))
 var jump_force := gravity * jump_duration
@@ -38,14 +38,13 @@ func _physics_process(delta):
 	if rng.randf() > 0.99 and transform.origin.y < jump_height:
 		velocity.y = jump_force
 	velocity += delta * gravity * Vector3.DOWN
-	velocity = clamp_h_vel(velocity, speed)
+	velocity = normalize_h_vel(velocity, speed)
 	var collision = move_and_collide(velocity * delta)
 	if collision: velocity = velocity.bounce(collision.normal)
 
-func clamp_h_vel(vel:Vector3, speed_lim:float) -> Vector3:
+func normalize_h_vel(vel:Vector3, speed_lim:float) -> Vector3:
 	var y_tmp = vel.y
 	vel.y = 0
-	if vel.length() > speed_lim:
-		vel *= speed_lim / vel.length()
+	vel *= speed_lim / vel.length()
 	vel.y = y_tmp
 	return vel
