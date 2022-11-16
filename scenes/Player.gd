@@ -17,7 +17,7 @@ var rng = RandomNumberGenerator.new()
 # -------------------------------------------------------------Movement Settings
 var velocity = Vector3()
 var speed: float = 10.0
-var bhop_max_added_speed:float = speed * 0.2
+var bhop_max_added_speed:float = speed * 1.5
 var max_ground_speed:float = speed + bhop_max_added_speed
 var accel_air:float = 5.0
 var accel_ground:float= 12.0
@@ -32,7 +32,8 @@ func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	shotgun.player = self
 	shotgun.ignored_objects.append(self)
-
+var yaw = 0
+var pitch = 0
 func _unhandled_input(event):
 	if (event is InputEventMouseMotion && Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED):
 		visual_root.rotation_degrees.y -= event.relative.x * mouse_sensitivity
@@ -52,7 +53,7 @@ func _unhandled_input(event):
 		Engine.time_scale = 0.2 / Engine.time_scale
 	
 	elif event.is_action_pressed("ability_0"):
-		print("press")
+		visual_root.rotation_degrees.y = 270
 
 func _process(delta):
 	# interpolating what gets rendered between physics frames

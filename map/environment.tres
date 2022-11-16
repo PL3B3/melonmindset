@@ -12,12 +12,14 @@ ground_horizon_color = Color( 0.839216, 0.917647, 0.980392, 1 )
 [resource]
 background_mode = 2
 background_sky = SubResource( 1 )
-ambient_light_color = Color( 0.541176, 0.541176, 0.541176, 1 )
-ambient_light_energy = 3.59
+ambient_light_color = Color( 0.45098, 0.45098, 0.45098, 1 )
+ambient_light_energy = 3.0
 ambient_light_sky_contribution = 0.2
 tonemap_mode = 3
 tonemap_white = 1.55
 ssao_intensity = 2.31
 ssao_light_affect = 1.0
+glow_intensity = 1.5
+glow_bloom = 0.3
 adjustment_enabled = true
 adjustment_color_correction = SubResource( 4 )

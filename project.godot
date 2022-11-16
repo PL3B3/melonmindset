@@ -125,7 +125,8 @@ Network="*res://networking/Network.gd"
 
 [debug]
 
-settings/fps/force_fps=120
+settings/fps/force_fps=60
+shapes/collision/shape_color=Color( 0.0313726, 1, 0, 0.419608 )
 
 [display]
 
@@ -214,6 +215,12 @@ ability_previous={
  ]
 }
 
+[layer_names]
+
+3d_render/layer_1="world"
+3d_render/layer_2="first_person"
+3d_render/layer_3="third_person"
+
 [logging]
 
 file_logging/enable_file_logging=true
@@ -226,4 +233,6 @@ common/physics_jitter_fix=0.0
 
 [rendering]
 
+quality/driver/driver_name="GLES2"
 quality/filters/msaa=2
+environment/default_environment="res://map/environment.tres"

@@ -14,15 +14,15 @@ func instantiate(start:Vector3, end:Vector3):
 
 func _ready():
 	rng.randomize()
-	look_at(target, Vector3.UP)
 	set_as_toplevel(true)
+	look_at(target, Vector3.UP)
 	speed *= rng.randf_range(0.2, 1.0)
 	$Mesh.transform.origin.z -= 0.5 * length
 	$Mesh.scale.z = length
 	$Mesh.scale.x *= rng.randf_range(0.5, 3.0)
 	$Mesh.scale.y *= rng.randf_range(0.5, 3.0)
 
-func _physics_process(delta):
+func _process(delta):
 	lifetime -= delta
 	$Mesh.scale.z -= delta * speed
 	$Mesh.transform.origin.z -= 0.5 * delta * speed

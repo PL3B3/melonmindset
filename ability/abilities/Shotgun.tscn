@@ -6,29 +6,37 @@
 
 [sub_resource type="Animation" id=1]
 resource_name = "Recoil"
+step = 0.01
 tracks/0/type = "transform"
 tracks/0/path = NodePath(".")
-tracks/0/interp = 1
+tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/keys = PoolRealArray( 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0.3, 1, 0, 0.0355558, 0.415953, 0.0591582, 0, 0, 0.998249, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1 )
+tracks/0/keys = PoolRealArray( 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0.15, 1, 0, 0.0355558, 0.415953, 0.1112, 0, 0, 0.993798, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1 )
 
 [node name="Shotgun" type="Spatial"]
+transform = Transform( 1, 0, 0, 0, 0.998552, -0.0537898, 0, 0.0537898, 0.998552, 0, 0.0191349, 0.223852 )
 script = ExtResource( 1 )
 
-[node name="Mesh" type="MeshInstance" parent="."]
-transform = Transform( 1.50996e-07, 8, 1.74846e-07, 0, -3.49691e-07, 4, 2, -6.03983e-07, -1.32005e-14, -2.81863e-08, -0.200805, -0.212474 )
+[node name="MeshRoot" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.556, -0.206 )
+
+[node name="Mesh" type="MeshInstance" parent="MeshRoot"]
+transform = Transform( -6.55671e-08, 9, 1.74846e-07, 0, -3.93403e-07, 4, 1.5, 3.93403e-07, 7.64274e-15, 0, -0.198, -0.228 )
+layers = 2
+cast_shadow = 0
 mesh = ExtResource( 2 )
+skeleton = NodePath("../..")
 material/0 = ExtResource( 3 )
 
-[node name="Muzzle" type="Spatial" parent="."]
+[node name="TracerRoot" type="Spatial" parent="MeshRoot"]
+transform = Transform( 1, 0, 0, 0, 1, 2.98023e-08, 0, -2.98023e-08, 1, 0, 0.203292, -0.412033 )
 
 [node name="Anim" type="AnimationPlayer" parent="."]
 anims/Recoil = SubResource( 1 )
 
 [node name="AudioPlayer" type="AudioStreamPlayer3D" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.139145, -0.461051 )
 unit_size = 10.0
 pitch_scale = 0.85
 bus = "Bass Boost"

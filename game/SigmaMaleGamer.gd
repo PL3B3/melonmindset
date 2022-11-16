@@ -3,9 +3,9 @@ extends KinematicBody
 var enabled = true
 var rng = RandomNumberGenerator.new()
 var last_pos:Vector3
-var speed := 15.0
+var speed := 5.0
 var velocity = Vector3.FORWARD * speed
-var jump_height := 4.5
+var jump_height := 2.0
 var jump_duration := 0.45
 var gravity := (2.0 * jump_height) / (pow(jump_duration, 2))
 var jump_force := gravity * jump_duration
