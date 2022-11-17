@@ -22,7 +22,7 @@ func _simulate(player, delta):
 	var h_velocity = Vector3(velocity.x, 0, velocity.z)
 	if is_on_floor():
 		var target_vel = Math.get_slope_velocity(dv * speed, get_floor_normal())
-		velocity = velocity.linear_interpolate(target_vel, accel_ground * delta)
+		velocity = velocity.linear_interpolate(target_vel, clamp(accel_ground * delta, 0.0, 1.0))
 		if h_velocity.length() > max_ground_speed:
 			velocity.x *= max_ground_speed / h_velocity.length()
 			velocity.z *= max_ground_speed / h_velocity.length()

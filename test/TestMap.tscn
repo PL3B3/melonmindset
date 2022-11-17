@@ -1,11 +1,10 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://materials/PrototypeMaterial.tres" type="Material" id=1]
 [ext_resource path="res://map/environment.tres" type="Environment" id=2]
 [ext_resource path="res://map/Block.tscn" type="PackedScene" id=3]
 [ext_resource path="res://game/SigmaMaleGamer.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/Player.tscn" type="PackedScene" id=5]
-[ext_resource path="res://arms/assets/m0DefaultMaterial.material" type="Material" id=6]
 
 [sub_resource type="CylinderShape" id=1]
 
@@ -182,7 +181,7 @@ mesh = SubResource( 2 )
 material/0 = ExtResource( 1 )
 
 [node name="Ramp" type="StaticBody" parent="Geometry"]
-transform = Transform( -4.37114e-07, 0, -10, 0, 5, 0, 10, 0, -4.37114e-07, 38, -2, -25 )
+transform = Transform( -4.37114e-07, 0, -10, 0, 5, 0, 10, 0, -4.37114e-07, 38, -2, -7 )
 
 [node name="CollisionPolygon" type="CollisionPolygon" parent="Geometry/Ramp"]
 polygon = PoolVector2Array( 1, 0, 0, 1, 0, 0 )
@@ -190,7 +189,7 @@ polygon = PoolVector2Array( 1, 0, 0, 1, 0, 0 )
 [node name="MeshInstance2" type="MeshInstance" parent="Geometry/Ramp"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0 )
 mesh = SubResource( 5 )
-material/0 = ExtResource( 6 )
+material/0 = ExtResource( 1 )
 
 [node name="Box" parent="Geometry" instance=ExtResource( 3 )]
 transform = Transform( 5, 0, 0, 0, 3, 0, 0, 0, 4, 38, 0, -29 )
@@ -234,7 +233,13 @@ cull_mask = 1048573
 [node name="Target2" parent="Camera" instance=ExtResource( 3 )]
 
 [node name="Player" parent="." instance=ExtResource( 5 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 18.8483, -1.2218, 19.1191 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 18, -1, 20 )
 
 [node name="SigmaMaleGamer" parent="." instance=ExtResource( 4 )]
-transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 9.82181 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 18, -1, 9 )
+
+[node name="SigmaMaleGamer2" parent="." instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 13 )
+
+[node name="SigmaMaleGamer3" parent="." instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -20 )

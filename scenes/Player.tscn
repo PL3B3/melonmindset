@@ -1,13 +1,15 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://scenes/Player.gd" type="Script" id=1]
 [ext_resource path="res://materials/proto_orange.png" type="Texture" id=2]
 [ext_resource path="res://assets/saul.jpg" type="Texture" id=3]
 [ext_resource path="res://ability/abilities/Shotgun.tscn" type="PackedScene" id=6]
 
-[sub_resource type="BoxShape" id=6]
+[sub_resource type="SphereShape" id=13]
 
 [sub_resource type="SphereMesh" id=7]
+radial_segments = 16
+rings = 8
 
 [sub_resource type="SpatialMaterial" id=8]
 albedo_texture = ExtResource( 3 )
@@ -16,11 +18,17 @@ roughness = 0.19
 uv1_scale = Vector3( 1.142, 1.539, 1 )
 uv1_offset = Vector3( -0.138, -0.155, 0 )
 
-[sub_resource type="CapsuleMesh" id=9]
+[sub_resource type="CapsuleMesh" id=14]
+radial_segments = 16
+rings = 4
 
 [sub_resource type="SpatialMaterial" id=10]
 flags_unshaded = true
 albedo_color = Color( 0.823529, 0.839216, 0.360784, 1 )
+
+[sub_resource type="CapsuleMesh" id=9]
+radial_segments = 16
+rings = 4
 
 [sub_resource type="Animation" id=12]
 resource_name = "Idle"
@@ -104,11 +112,11 @@ tracks/2/keys = {
 }
 
 [node name="Player" type="KinematicBody"]
-collision/safe_margin = 0.004
+collision/safe_margin = 0.005
 script = ExtResource( 1 )
 
 [node name="Collider" type="CollisionShape" parent="."]
-shape = SubResource( 6 )
+shape = SubResource( 13 )
 
 [node name="VisualRoot" type="Spatial" parent="."]
 
@@ -124,7 +132,7 @@ material/0 = SubResource( 8 )
 [node name="MeshL" type="MeshInstance" parent="VisualRoot/Feet/FootL"]
 transform = Transform( 0.269681, 0, 0, 0, 0.2, 0, 0, 0, 0.353596, -0.7, -0.8, -0.15 )
 layers = 4
-mesh = SubResource( 9 )
+mesh = SubResource( 14 )
 skeleton = NodePath("../..")
 material/0 = SubResource( 10 )
 
@@ -141,7 +149,7 @@ material/0 = SubResource( 10 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0 )
 cull_mask = 1048571
 current = true
-fov = 80.0
+fov = 90.0
 far = 200.0
 
 [node name="Crosshair" type="Sprite3D" parent="VisualRoot/Camera"]

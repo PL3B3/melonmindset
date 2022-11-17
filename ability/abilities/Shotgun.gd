@@ -9,9 +9,10 @@ onready var rng = RandomNumberGenerator.new()
 onready var recoil_anim_length = anim.get_animation("Recoil").length
 
 var spread:Vector2 = Vector2(deg2rad(3), deg2rad(3))
+var spread_deg:float = 4.0
 var rays_per_shot:int = 15
 var max_range:float = 200.0
-var fire_ticks:int = 10
+var fire_ticks:int = 40
 var fire_timer:int = 0
 var player = null
 var ignored_objects = []
@@ -27,8 +28,8 @@ func _physics_process(delta):
 
 func fire(camera_transform):
 	fire_timer = fire_ticks
-#	play_recoil_anim()
-#	play_shot_sound()
+	play_recoil_anim()
+	play_shot_sound()
 	var results = []
 	for i in rays_per_shot:
 		var end = raycast(camera_transform.origin, camera_transform.basis, results)
@@ -53,6 +54,8 @@ func render():
 
 func raycast(start, basis, results) -> Vector3:
 	var space_state = get_world().direct_space_state
+#	var spread_deg_axis = Vector3.UP.rotated(-basis.z, rng.randf_range(-PI, PI))
+#	var ray_vec = (max_range * -basis.z).rotated(spread_deg_axis, rng.randf() * deg2rad(spread_deg))
 	var ray_vec = (max_range * -basis.z).rotated(
 		basis.x, rng.randf_range(-spread.x, spread.x)
 	).rotated(

@@ -1,11 +1,14 @@
 extends KinematicBody
 
+onready var raycast = get_node("RayCast")
+onready var mesh = get_node("MeshInstance")
+onready var anim = get_node("Anim")
 var enabled = true
 var rng = RandomNumberGenerator.new()
 var last_pos:Vector3
-var speed := 5.0
+var speed := 20.0
 var velocity = Vector3.FORWARD * speed
-var jump_height := 2.0
+var jump_height := 5.0
 var jump_duration := 0.45
 var gravity := (2.0 * jump_height) / (pow(jump_duration, 2))
 var jump_force := gravity * jump_duration
@@ -13,31 +16,29 @@ var jump_force := gravity * jump_duration
 func _ready():
 	last_pos = transform.origin
 	rng.randomize()
-	$MeshInstance.set_as_toplevel(true)
+	mesh.set_as_toplevel(true)
+	anim.play("Run")
 
 func _process(delta):
-	$MeshInstance.transform.origin = last_pos.linear_interpolate(
+	mesh.transform.origin = last_pos.linear_interpolate(
 		transform.origin, Engine.get_physics_interpolation_fraction())
 	var h_dir = Vector3(velocity.x, 0, velocity.z)
-#	print(h_dir)
-	$MeshInstance.look_at($MeshInstance.transform.origin + h_dir, Vector3.UP)
-	Network.sigma_position = $MeshInstance.transform.origin
+	mesh.look_at(mesh.transform.origin + h_dir, Vector3.UP)
+	Network.sigma_position = mesh.transform.origin
 
-var target_velocity = velocity
 var curve = 0
 func _physics_process(delta):
 	if not enabled:
 		return
 	last_pos = global_transform.origin
 	if rng.randf() > 0.99:
-#		target_velocity = speed * velocity.normalized().rotated(Vector3.UP, rng.randf_range(-3.0, 3.0))
 		curve = rng.randf_range(-3.0, 3.0)
-#	target_velocity.y = velocity.y
-#	velocity = velocity.linear_interpolate(target_velocity, delta * accel_ground)
 	velocity = velocity.rotated(Vector3.UP, curve * delta)
-	if rng.randf() > 0.99 and transform.origin.y < jump_height:
+	if not raycast.is_colliding():
+		velocity += delta * gravity * Vector3.DOWN
+	elif rng.randf() > 0.98:
 		velocity.y = jump_force
-	velocity += delta * gravity * Vector3.DOWN
+	
 	velocity = normalize_h_vel(velocity, speed)
 	var collision = move_and_collide(velocity * delta)
 	if collision: velocity = velocity.bounce(collision.normal)

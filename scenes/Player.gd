@@ -32,6 +32,7 @@ func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	shotgun.player = self
 	shotgun.ignored_objects.append(self)
+
 var yaw = 0
 var pitch = 0
 func _unhandled_input(event):
@@ -56,9 +57,12 @@ func _unhandled_input(event):
 		visual_root.rotation_degrees.y = 270
 
 func _process(delta):
+#	print(delta)
 	# interpolating what gets rendered between physics frames
+#	print("last: %s, current: %s" % [last_position, global_transform.origin])
 	visual_root.global_transform.origin = last_position.linear_interpolate(
 		global_transform.origin, Engine.get_physics_interpolation_fraction())
+	visual_root.force_update_transform()
 	shotgun.render()
 #	var position = global_transform.origin
 #	var predicted_position = position + (position - last_position)
@@ -78,7 +82,7 @@ func _physics_process(delta):
 	var h_vel = Vector3(velocity.x, 0, velocity.z)
 	if is_on_floor():
 		var target_vel = Math.get_slope_velocity(dv * speed, get_floor_normal())
-		velocity = velocity.linear_interpolate(target_vel, accel_ground * delta)
+		velocity = velocity.linear_interpolate(target_vel, clamp(accel_ground * delta, 0.0, 1.0))
 		if h_vel() > max_ground_speed:
 			velocity.x *= max_ground_speed / h_vel()
 			velocity.z *= max_ground_speed / h_vel()

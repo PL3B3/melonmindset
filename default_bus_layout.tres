@@ -7,9 +7,9 @@ band_db/100_hz = 2.2
 
 [sub_resource type="AudioEffectEQ10" id=2]
 resource_name = "EQ10"
-band_db/31_hz = 9.4
+band_db/31_hz = 15.0
 band_db/62_hz = 15.0
-band_db/125_hz = 4.2
+band_db/125_hz = 5.0
 
 [resource]
 bus/0/volume_db = -5.93075
