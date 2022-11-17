@@ -60,14 +60,14 @@ func _process(delta):
 #	print(delta)
 	# interpolating what gets rendered between physics frames
 #	print("last: %s, current: %s" % [last_position, global_transform.origin])
-	visual_root.global_transform.origin = last_position.linear_interpolate(
-		global_transform.origin, Engine.get_physics_interpolation_fraction())
-	visual_root.force_update_transform()
+#	visual_root.global_transform.origin = last_position.linear_interpolate(
+#		global_transform.origin, Engine.get_physics_interpolation_fraction())
+#	visual_root.force_update_transform()
 	shotgun.render()
-#	var position = global_transform.origin
-#	var predicted_position = position + (position - last_position)
-#	visual_root.global_transform.origin = position.linear_interpolate(
-#		predicted_position, Engine.get_physics_interpolation_fraction())
+	var position = global_transform.origin
+	var predicted_position = position + (position - last_position)
+	visual_root.global_transform.origin = position.linear_interpolate(
+		predicted_position, Engine.get_physics_interpolation_fraction())
 
 var cooldown = 0
 func _physics_process(delta):

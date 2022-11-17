@@ -6,14 +6,16 @@ enum Inputs {
     YAW,
     PITCH,
     JUMP,
-    L_CLICK,
-    R_CLICK
+    CLICK
 }
 
 # ringbuffer of inputs
 var mouse_sensitivity:float = 0.05
 var yaw:float = 0.0
 var pitch:float = 0.0
+var z_motion:float = 0
+var x_motion:float = 0
+var input_frame:Dictionary = {} # command frame input
 
 func _unhandled_input(event):
     if (event is InputEventMouseMotion && Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED):
@@ -35,5 +37,9 @@ func _unhandled_input(event):
         pass
 
 func _simulate(player, delta):
-    var input_z = Input.get_action_strength("move_backward") - Input.get_action_strength("move_forward")
-    var input_x = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
+    input_frame[Inputs.Z_MOTION] = Input.get_action_strength("move_north") - Input.get_action_strength("move_south")
+    input_frame[Inputs.X_MOTION] = Input.get_action_strength("move_east") - Input.get_action_strength("move_west")
+    input_frame[Inputs.YAW] = yaw
+    input_frame[Inputs.PITCH] = pitch
+    input_frame[Inputs.JUMP] = Input.is_action_pressed("jump")
+    input_frame[Inputs.CLICK] = Input.is_action_pressed("click")

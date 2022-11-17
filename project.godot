@@ -24,6 +24,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://gamer/Gamer.gd"
 }, {
+"base": "Reference",
+"class": "Inputs",
+"language": "GDScript",
+"path": "res://scenes/player/Inputs.gd"
+}, {
 "base": "Node",
 "class": "InstrucBuffer",
 "language": "GDScript",
@@ -98,6 +103,7 @@ _global_script_class_icons={
 "Ability": "",
 "ClientPacketManager": "",
 "Gamer": "",
+"Inputs": "",
 "InstrucBuffer": "",
 "Intersector": "",
 "LagBuffer": "",
