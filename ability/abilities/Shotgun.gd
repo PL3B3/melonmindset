@@ -19,54 +19,54 @@ var ignored_objects = []
 var tracer_ends = []
 
 func _ready():
-	rng.seed = hash("consistency")
+    rng.seed = hash("consistency")
 
 func _physics_process(delta):
-	fire_timer -= 1
-	if Input.is_action_pressed("click") and fire_timer <= 0:
-		fire(player.camera.global_transform)
+    fire_timer -= 1
+    if Input.is_action_pressed("click") and fire_timer <= 0:
+        fire(player.camera.global_transform)
 
 func fire(camera_transform):
-	fire_timer = fire_ticks
-	play_recoil_anim()
-	play_shot_sound()
-	var results = []
-	for i in rays_per_shot:
-		var end = raycast(camera_transform.origin, camera_transform.basis, results)
-		tracer_ends.append(end)
-	var hit_counter = 0
-	for result in results:
-		if result and is_instance_valid(result.collider) and result.collider.is_in_group("sigma"):
-			hit_counter += 1
-	print("%d / %d bullets landed" % [hit_counter, rays_per_shot])
+    fire_timer = fire_ticks
+    play_recoil_anim()
+    play_shot_sound()
+    var results = []
+    for i in rays_per_shot:
+        var end = raycast(camera_transform.origin, camera_transform.basis, results)
+        tracer_ends.append(end)
+    var hit_counter = 0
+    for result in results:
+        if result and is_instance_valid(result.collider) and result.collider.is_in_group("sigma"):
+            hit_counter += 1
+    print("%d / %d bullets landed" % [hit_counter, rays_per_shot])
 
 func play_recoil_anim():
-	var fire_rate_seconds = fire_ticks * 1.0 / Engine.iterations_per_second
-	anim.stop()
-	anim.play("Recoil", -1, recoil_anim_length / fire_rate_seconds)
+    var fire_rate_seconds = fire_ticks * 1.0 / Engine.iterations_per_second
+    anim.stop()
+    anim.play("Recoil", -1, recoil_anim_length / fire_rate_seconds)
 
 func play_shot_sound():
-	audio.set_stream(shot_sound)
-	audio.play()
+    audio.set_stream(shot_sound)
+    audio.play()
 
 func render():
-	while tracer_ends: draw_tracer(tracer_ends.pop_back())
+    while tracer_ends: draw_tracer(tracer_ends.pop_back())
 
 func raycast(start, basis, results) -> Vector3:
-	var space_state = get_world().direct_space_state
+    var space_state = get_world().direct_space_state
 #	var spread_deg_axis = Vector3.UP.rotated(-basis.z, rng.randf_range(-PI, PI))
 #	var ray_vec = (max_range * -basis.z).rotated(spread_deg_axis, rng.randf() * deg2rad(spread_deg))
-	var ray_vec = (max_range * -basis.z).rotated(
-		basis.x, rng.randf_range(-spread.x, spread.x)
-	).rotated(
-		basis.y, rng.randf_range(-spread.y, spread.y)
-	)
-	var end = start + ray_vec
-	var result = space_state.intersect_ray(start, end, [self] + ignored_objects)
-	results.push_back(result)
-	return result.position if result else end
+    var ray_vec = (max_range * -basis.z).rotated(
+        basis.x, rng.randf_range(-spread.x, spread.x)
+    ).rotated(
+        basis.y, rng.randf_range(-spread.y, spread.y)
+    )
+    var end = start + ray_vec
+    var result = space_state.intersect_ray(start, end, [self] + ignored_objects)
+    results.push_back(result)
+    return result.position if result else end
 
 func draw_tracer(end):
-	var tracer = Tracer.instance()
-	tracer.instantiate(tracer_root.global_transform.origin, end)
-	tracer_root.add_child(tracer)
+    var tracer = Tracer.instance()
+    tracer.instantiate(tracer_root.global_transform.origin, end)
+    tracer_root.add_child(tracer)

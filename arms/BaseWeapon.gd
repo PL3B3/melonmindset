@@ -26,82 +26,82 @@ signal dealt_damage(damage)
 signal recoil(direction, speed, ticks)
 
 func _ready():
-	next_shot_timer.connect("timeout", self, "_load_next_shot")
-	next_shot_timer.set_one_shot(true)
-	add_child(next_shot_timer)
-	init()
+    next_shot_timer.connect("timeout", self, "_load_next_shot")
+    next_shot_timer.set_one_shot(true)
+    add_child(next_shot_timer)
+    init()
 
 func init():
-	# set this in init to avoid using old value
-	clip_remaining = clip_size_default
-	ammo_remaining = ammo_default
+    # set this in init to avoid using old value
+    clip_remaining = clip_size_default
+    ammo_remaining = ammo_default
 
 
 func fire(fire_mode: int, fire_parameters):
-	if can_fire and clip_remaining > 0 and ammo_remaining > 0:
-		clip_remaining -= 1
-		ammo_remaining -= 1
-		emit_signal("clip_changed")
-		var fire_transform = Transform()
-		fire_transform.basis = fire_parameters[0].basis
-		fire_transform.origin = fire_point.get_global_transform().origin
-		match fire_mode:
-			0:
-				primary_fire(fire_transform, fire_parameters)
-			1: 
-				secondary_fire(fire_transform, fire_parameters)
-			2:
-				tertiary_fire(fire_transform, fire_parameters)
-			_:
-				primary_fire(fire_transform, fire_parameters)
-		can_fire = false
-		if clip_remaining == 0:
-			next_shot_timer.start(reload_time_default)
-			emit_signal("reload_started")
-			animate_reload()
-		else:
-			next_shot_timer.start(fire_rate_default)
+    if can_fire and clip_remaining > 0 and ammo_remaining > 0:
+        clip_remaining -= 1
+        ammo_remaining -= 1
+        emit_signal("clip_changed")
+        var fire_transform = Transform()
+        fire_transform.basis = fire_parameters[0].basis
+        fire_transform.origin = fire_point.get_global_transform().origin
+        match fire_mode:
+            0:
+                primary_fire(fire_transform, fire_parameters)
+            1: 
+                secondary_fire(fire_transform, fire_parameters)
+            2:
+                tertiary_fire(fire_transform, fire_parameters)
+            _:
+                primary_fire(fire_transform, fire_parameters)
+        can_fire = false
+        if clip_remaining == 0:
+            next_shot_timer.start(reload_time_default)
+            emit_signal("reload_started")
+            animate_reload()
+        else:
+            next_shot_timer.start(fire_rate_default)
 
 func primary_fire(fire_transform: Transform, fire_parameters):
-	print("Fired weapon in primary mode")
+    print("Fired weapon in primary mode")
 
 func secondary_fire(fire_transform: Transform, fire_parameters):
-	print("Fired weapon in secondary mode")
+    print("Fired weapon in secondary mode")
 
 func tertiary_fire(fire_transform: Transform, fire_parameters):
-	print("Fired weapon in tertiary mode")
+    print("Fired weapon in tertiary mode")
 
 func _load_next_shot():
-	if clip_remaining == 0 and ammo_remaining > 0:
-		clip_remaining = min(clip_size_default, ammo_remaining)
-	can_fire = true
+    if clip_remaining == 0 and ammo_remaining > 0:
+        clip_remaining = min(clip_size_default, ammo_remaining)
+    can_fire = true
 
 func animate_reload():
-	pass
+    pass
 
-	pass
-	
+    pass
+    
 
 #func set_clip_and_reserve(new_clip: int, new_reserve: int)
 
 func handle_loading():
-	if clip_remaining == 0:
-		next_shot_timer.start(reload_time_default)
-		emit_signal("reload_started")
-		animate_reload()
-	else:
-		next_shot_timer.start(fire_rate_default)
+    if clip_remaining == 0:
+        next_shot_timer.start(reload_time_default)
+        emit_signal("reload_started")
+        animate_reload()
+    else:
+        next_shot_timer.start(fire_rate_default)
 
 func load_from_reserve():
-	can_fire = false
-	
-	emit_signal("reload_started")
-	animate_reload()
-	
-	var amount_to_add = min(
-		clip_size_default - clip_remaining,
-		ammo_remaining)
-	clip_remaining += amount_to_add
-	ammo_remaining -= amount_to_add
-	
-	can_fire = true
+    can_fire = false
+    
+    emit_signal("reload_started")
+    animate_reload()
+    
+    var amount_to_add = min(
+        clip_size_default - clip_remaining,
+        ammo_remaining)
+    clip_remaining += amount_to_add
+    ammo_remaining -= amount_to_add
+    
+    can_fire = true
