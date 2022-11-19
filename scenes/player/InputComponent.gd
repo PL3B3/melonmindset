@@ -1,21 +1,13 @@
+class_name InputComponent
 extends Node
-
-enum Inputs {
-    Z_MOTION,
-    X_MOTION,
-    YAW,
-    PITCH,
-    JUMP,
-    CLICK
-}
 
 # ringbuffer of inputs
 var mouse_sensitivity:float = 0.05
 var yaw:float = 0.0
 var pitch:float = 0.0
-var z_motion:float = 0
-var x_motion:float = 0
-var input_frame:Dictionary = {} # command frame input
+
+func _ready():
+    Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 func _unhandled_input(event):
     if (event is InputEventMouseMotion && Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED):
@@ -31,15 +23,18 @@ func _unhandled_input(event):
             Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
     
     elif event.is_action_pressed("walk"):
-        Engine.time_scale = 0.2 / Engine.time_scale
+        Engine.time_scale = 4.0 / Engine.time_scale
     
     elif event.is_action_pressed("ability_0"):
         pass
 
-func _simulate(player, delta):
-    input_frame[Inputs.Z_MOTION] = Input.get_action_strength("move_north") - Input.get_action_strength("move_south")
-    input_frame[Inputs.X_MOTION] = Input.get_action_strength("move_east") - Input.get_action_strength("move_west")
-    input_frame[Inputs.YAW] = yaw
-    input_frame[Inputs.PITCH] = pitch
-    input_frame[Inputs.JUMP] = Input.is_action_pressed("jump")
-    input_frame[Inputs.CLICK] = Input.is_action_pressed("click")
+func _update_input(player):
+    var input:Dictionary = {}
+    input[Inputs.Z_MOTION] = Input.get_action_strength("move_forward") - Input.get_action_strength("move_backward")
+    input[Inputs.X_MOTION] = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
+    input[Inputs.YAW] = yaw
+    input[Inputs.PITCH] = pitch
+    input[Inputs.JUMP] = Input.is_action_pressed("jump")
+    input[Inputs.CLICK] = Input.is_action_pressed("click")
+    input["id"] = OS.get_ticks_msec()
+    player.inputs.push_back(input)

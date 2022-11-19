@@ -71,6 +71,7 @@ func _process(delta):
 
 var cooldown = 0
 func _physics_process(delta):
+    print(velocity, " ", global_transform.origin, " ", is_on_floor())
     var snap = Vector3.DOWN * 0.5
     cooldown -= delta
     last_position = global_transform.origin

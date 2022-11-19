@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://map/Block.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/player/Player.tscn" type="PackedScene" id=2]
+
+[node name="Spatial" type="Spatial"]
+
+[node name="Block" parent="." instance=ExtResource( 1 )]
+transform = Transform( 50, 0, 0, 0, 1, 0, 0, 0, 50, 0, 0, 0 )
+
+[node name="Block2" parent="." instance=ExtResource( 1 )]
+transform = Transform( 35.3553, 0.707107, 0, -35.3553, 0.707107, 0, 0, 0, 50, 13, 36, 0 )
+
+[node name="Player" parent="." instance=ExtResource( 2 )]
+transform = Transform( 10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 19, 0 )
