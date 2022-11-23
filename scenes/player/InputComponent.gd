@@ -23,7 +23,7 @@ func _unhandled_input(event):
             Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
     
     elif event.is_action_pressed("walk"):
-        Engine.time_scale = 4.0 / Engine.time_scale
+        Engine.time_scale = 10.0 / Engine.time_scale
     
     elif event.is_action_pressed("ability_0"):
         pass

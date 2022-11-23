@@ -141,7 +141,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Bulbliterate"
-run/main_scene="res://test/TestMap.tscn"
+run/main_scene="res://map/Goodwater.tscn"
 
 [autoload]
 
@@ -151,10 +151,6 @@ Network="*res://networking/Network.gd"
 
 settings/fps/force_fps=120
 shapes/collision/shape_color=Color( 0.0313726, 1, 0, 0.419608 )
-
-[display]
-
-window/size/fullscreen=true
 
 [input]
 
@@ -239,6 +235,10 @@ ability_previous={
  ]
 }
 
+[input_devices]
+
+buffering/agile_event_flushing=true
+
 [layer_names]
 
 3d_render/layer_1="world"
@@ -251,7 +251,6 @@ file_logging/enable_file_logging=true
 
 [physics]
 
-common/physics_fps=80
 common/physics_jitter_fix=0.0
 3d/physics_engine="Bullet"
 3d/active_soft_world=false
@@ -259,5 +258,6 @@ common/physics_jitter_fix=0.0
 [rendering]
 
 quality/driver/driver_name="GLES2"
+quality/shadows/filter_mode=2
 quality/filters/msaa=2
 environment/default_environment="res://map/environment.tres"

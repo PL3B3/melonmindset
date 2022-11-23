@@ -1,0 +1,188 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scenes/player/Player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://map/Block.tscn" type="PackedScene" id=3]
+
+[node name="Spatial" type="Spatial"]
+
+[node name="Sun" type="DirectionalLight" parent="."]
+transform = Transform( 0.958584, -0.121085, 0.257788, -0.13813, 0.593897, 0.792595, -0.249071, -0.795377, 0.552575, 0, 0, 0 )
+light_energy = 2.0
+shadow_enabled = true
+
+[node name="Player" parent="." instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 71.75, 3, 55.3386 )
+
+[node name="Obstacles1" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 70.4931, 2, 98.2312 )
+
+[node name="LowWall" parent="Obstacles1" instance=ExtResource( 3 )]
+transform = Transform( 1.54607, 0.856609, 3.74356, -0.732805, 1.80727, -1.77437, -1.0357, 0, 6.84378, -1.66987, 1.45247, 12.3071 )
+
+[node name="LowWall2" parent="Obstacles1" instance=ExtResource( 3 )]
+transform = Transform( 0.89877, -0.0737349, -7.14062, -0.732805, 1.80727, -1.77437, 1.62948, 0.853429, 3.14057, -1.89098, 1.4766, 12.3007 )
+
+[node name="HighWall" parent="Obstacles1" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 6, 0, 0, 0, 8, -5.60542, 0.149461, 8.57798 )
+
+[node name="Ramp" parent="Obstacles1" instance=ExtResource( 3 )]
+transform = Transform( 0.5, -8.06991, 0, 0.866025, 4.65917, 0, 0, 0, 8, 1.56475, 3.91925, 11.5774 )
+
+[node name="Diag" parent="Obstacles1" instance=ExtResource( 3 )]
+transform = Transform( 0.698432, 0.348058, -0.625338, -0.446026, 0.89502, 0, 0.55969, 0.278917, 0.780354, -2, -1, 5 )
+
+[node name="Diag2" parent="Obstacles1" instance=ExtResource( 3 )]
+transform = Transform( 0.698432, 0.348058, -0.625338, -0.615432, 0.738076, -0.276562, 0.365288, 0.578013, 0.729703, 0.76628, -1, 6.93066 )
+
+[node name="MiniRamp" parent="Obstacles1" instance=ExtResource( 3 )]
+transform = Transform( 1.7, 0, 0, 0, 0.433013, 1.6, 0, -0.25, 2.77128, 2.31117, -0.97522, 6.1475 )
+
+[node name="Obstacles2" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 50.4931, 2, 79.2312 )
+
+[node name="LowWall" parent="Obstacles2" instance=ExtResource( 3 )]
+transform = Transform( 1.54607, 0.856609, 3.74356, -0.732805, 1.80727, -1.77437, -1.0357, 0, 6.84378, -1.66987, 1.45247, 12.3071 )
+
+[node name="LowWall2" parent="Obstacles2" instance=ExtResource( 3 )]
+transform = Transform( 0.89877, -0.0737349, -7.14062, -0.732805, 1.80727, -1.77437, 1.62948, 0.853429, 3.14057, -1.89098, 1.4766, 12.3007 )
+
+[node name="HighWall" parent="Obstacles2" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 6, 0, 0, 0, 8, -5.60542, 0.149461, 8.57798 )
+
+[node name="Ramp" parent="Obstacles2" instance=ExtResource( 3 )]
+transform = Transform( 0.5, -8.06991, 0, 0.866025, 4.65917, 0, 0, 0, 8, 1.56475, 3.91925, 11.5774 )
+
+[node name="Diag" parent="Obstacles2" instance=ExtResource( 3 )]
+transform = Transform( 0.698432, 0.348058, -0.625338, -0.446026, 0.89502, 0, 0.55969, 0.278917, 0.780354, -2, -1, 5 )
+
+[node name="Diag2" parent="Obstacles2" instance=ExtResource( 3 )]
+transform = Transform( 0.698432, 0.348058, -0.625338, -0.615432, 0.738076, -0.276562, 0.365288, 0.578013, 0.729703, 0.76628, -1, 6.93066 )
+
+[node name="MiniRamp" parent="Obstacles2" instance=ExtResource( 3 )]
+transform = Transform( 1.7, 0, 0, 0, 0.433013, 1.6, 0, -0.25, 2.77128, 2.31117, -0.97522, 6.1475 )
+
+[node name="Obstacles3" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 124.493, 2, 88.2312 )
+
+[node name="LowWall" parent="Obstacles3" instance=ExtResource( 3 )]
+transform = Transform( 1.54607, 0.856609, 3.74356, -0.732805, 1.80727, -1.77437, -1.0357, 0, 6.84378, -1.66987, 1.45247, 12.3071 )
+
+[node name="LowWall2" parent="Obstacles3" instance=ExtResource( 3 )]
+transform = Transform( 0.89877, -0.0737349, -7.14062, -0.732805, 1.80727, -1.77437, 1.62948, 0.853429, 3.14057, -1.89098, 1.4766, 12.3007 )
+
+[node name="HighWall" parent="Obstacles3" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 6, 0, 0, 0, 8, -5.60542, 0.149461, 8.57798 )
+
+[node name="Ramp" parent="Obstacles3" instance=ExtResource( 3 )]
+transform = Transform( 0.5, -8.06991, 0, 0.866025, 4.65917, 0, 0, 0, 8, 1.56475, 3.91925, 11.5774 )
+
+[node name="Diag" parent="Obstacles3" instance=ExtResource( 3 )]
+transform = Transform( 0.698432, 0.348058, -0.625338, -0.446026, 0.89502, 0, 0.55969, 0.278917, 0.780354, -2, -1, 5 )
+
+[node name="Diag2" parent="Obstacles3" instance=ExtResource( 3 )]
+transform = Transform( 0.698432, 0.348058, -0.625338, -0.615432, 0.738076, -0.276562, 0.365288, 0.578013, 0.729703, 0.76628, -1, 6.93066 )
+
+[node name="MiniRamp" parent="Obstacles3" instance=ExtResource( 3 )]
+transform = Transform( 1.7, 0, 0, 0, 0.433013, 1.6, 0, -0.25, 2.77128, 2.31117, -0.97522, 6.1475 )
+
+[node name="Obstacles4" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 99, 2, 52 )
+
+[node name="LowWall" parent="Obstacles4" instance=ExtResource( 3 )]
+transform = Transform( 1.54607, 0.856609, 3.74356, -0.732805, 1.80727, -1.77437, -1.0357, 0, 6.84378, -1.66987, 1.45247, 12.3071 )
+
+[node name="LowWall2" parent="Obstacles4" instance=ExtResource( 3 )]
+transform = Transform( 0.89877, -0.0737349, -7.14062, -0.732805, 1.80727, -1.77437, 1.62948, 0.853429, 3.14057, -1.89098, 1.4766, 12.3007 )
+
+[node name="HighWall" parent="Obstacles4" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 6, 0, 0, 0, 8, -5.60542, 0.149461, 8.57798 )
+
+[node name="Ramp" parent="Obstacles4" instance=ExtResource( 3 )]
+transform = Transform( 0.5, -8.06991, 0, 0.866025, 4.65917, 0, 0, 0, 8, 1.56475, 3.91925, 11.5774 )
+
+[node name="Diag" parent="Obstacles4" instance=ExtResource( 3 )]
+transform = Transform( 0.698432, 0.348058, -0.625338, -0.446026, 0.89502, 0, 0.55969, 0.278917, 0.780354, -2, -1, 5 )
+
+[node name="Diag2" parent="Obstacles4" instance=ExtResource( 3 )]
+transform = Transform( 0.698432, 0.348058, -0.625338, -0.615432, 0.738076, -0.276562, 0.365288, 0.578013, 0.729703, 0.76628, -1, 6.93066 )
+
+[node name="MiniRamp" parent="Obstacles4" instance=ExtResource( 3 )]
+transform = Transform( 1.7, 0, 0, 0, 0.433013, 1.6, 0, -0.25, 2.77128, 2.31117, -0.97522, 6.1475 )
+
+[node name="Obstacles5" type="Spatial" parent="."]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 75, 2, 90 )
+
+[node name="LowWall" parent="Obstacles5" instance=ExtResource( 3 )]
+transform = Transform( 1.54607, 0.856609, 3.74356, -0.732805, 1.80727, -1.77437, -1.0357, 0, 6.84378, -1.66987, 1.45247, 12.3071 )
+
+[node name="LowWall2" parent="Obstacles5" instance=ExtResource( 3 )]
+transform = Transform( 0.89877, -0.0737349, -7.14062, -0.732805, 1.80727, -1.77437, 1.62948, 0.853429, 3.14057, -1.89098, 1.4766, 12.3007 )
+
+[node name="HighWall" parent="Obstacles5" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 6, 0, 0, 0, 8, -5.60542, 0.149461, 8.57798 )
+
+[node name="Ramp" parent="Obstacles5" instance=ExtResource( 3 )]
+transform = Transform( 0.5, -8.06991, 0, 0.866025, 4.65917, 0, 0, 0, 8, 1.56475, 3.91925, 11.5774 )
+
+[node name="Diag" parent="Obstacles5" instance=ExtResource( 3 )]
+transform = Transform( 0.698432, 0.348058, -0.625338, -0.446026, 0.89502, 0, 0.55969, 0.278917, 0.780354, -2, -1, 5 )
+
+[node name="Diag2" parent="Obstacles5" instance=ExtResource( 3 )]
+transform = Transform( 0.698432, 0.348058, -0.625338, -0.615432, 0.738076, -0.276562, 0.365288, 0.578013, 0.729703, 0.76628, -1, 6.93066 )
+
+[node name="MiniRamp" parent="Obstacles5" instance=ExtResource( 3 )]
+transform = Transform( 1.7, 0, 0, 0, 0.433013, 1.6, 0, -0.25, 2.77128, 2.31117, -0.97522, 6.1475 )
+
+[node name="Obstacles7" type="Spatial" parent="."]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 108, 6, 125 )
+
+[node name="LowWall" parent="Obstacles7" instance=ExtResource( 3 )]
+transform = Transform( 1.54607, 0.856609, 3.74356, -0.732805, 1.80727, -1.77437, -1.0357, 0, 6.84378, -1.66987, 1.45247, 12.3071 )
+
+[node name="LowWall2" parent="Obstacles7" instance=ExtResource( 3 )]
+transform = Transform( 0.89877, -0.0737349, -7.14062, -0.732805, 1.80727, -1.77437, 1.62948, 0.853429, 3.14057, -1.89098, 1.4766, 12.3007 )
+
+[node name="HighWall" parent="Obstacles7" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 6, 0, 0, 0, 8, -5.60542, 0.149461, 8.57798 )
+
+[node name="Ramp" parent="Obstacles7" instance=ExtResource( 3 )]
+transform = Transform( 0.5, -8.06991, 0, 0.866025, 4.65917, 0, 0, 0, 8, 1.56475, 3.91925, 11.5774 )
+
+[node name="Diag" parent="Obstacles7" instance=ExtResource( 3 )]
+transform = Transform( 0.698432, 0.348058, -0.625338, -0.446026, 0.89502, 0, 0.55969, 0.278917, 0.780354, -2, -1, 5 )
+
+[node name="Diag2" parent="Obstacles7" instance=ExtResource( 3 )]
+transform = Transform( 0.698432, 0.348058, -0.625338, -0.615432, 0.738076, -0.276562, 0.365288, 0.578013, 0.729703, 0.76628, -1, 6.93066 )
+
+[node name="MiniRamp" parent="Obstacles7" instance=ExtResource( 3 )]
+transform = Transform( 1.7, 0, 0, 0, 0.433013, 1.6, 0, -0.25, 2.77128, 2.31117, -0.97522, 6.1475 )
+
+[node name="Obstacles6" type="Spatial" parent="."]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 110, 2, 125 )
+
+[node name="Ramp" parent="Obstacles6" instance=ExtResource( 3 )]
+transform = Transform( 0.5, -8.06991, 0, 0.866025, 4.65917, 0, 0, 0, 8, 1.56475, 3.91925, 11.5774 )
+
+[node name="LowWall" parent="Obstacles6" instance=ExtResource( 3 )]
+transform = Transform( 1.54607, 0.856609, 3.74356, -0.732805, 1.80727, -1.77437, -1.0357, 0, 6.84378, -1.66987, 1.45247, 12.3071 )
+
+[node name="HighWall" parent="Obstacles6" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 6, 0, 0, 0, 8, -5.60542, 0.149461, 8.57798 )
+
+[node name="Diag" parent="Obstacles6" instance=ExtResource( 3 )]
+transform = Transform( 0.698432, 0.348058, -0.625338, -0.446026, 0.89502, 0, 0.55969, 0.278917, 0.780354, -2, -1, 5 )
+
+[node name="Diag2" parent="Obstacles6" instance=ExtResource( 3 )]
+transform = Transform( 0.698432, 0.348058, -0.625338, -0.615432, 0.738076, -0.276562, 0.365288, 0.578013, 0.729703, 0.76628, -1, 6.93066 )
+
+[node name="MiniRamp" parent="Obstacles6" instance=ExtResource( 3 )]
+transform = Transform( 1.7, 0, 0, 0, 0.433013, 1.6, 0, -0.25, 2.77128, 2.31117, -0.97522, 6.1475 )
+
+[node name="Floor" parent="." instance=ExtResource( 3 )]
+transform = Transform( 150, 0, 0, 0, 10, 0, 0, 0, 150, 150, -10, 150 )
+
+[node name="Floor3" parent="." instance=ExtResource( 3 )]
+transform = Transform( -6.55671e-06, 10, 0, -150, -4.37114e-07, 0, 0, 0, 150, 150, -143, 150 )
+
+[node name="Floor2" parent="." instance=ExtResource( 3 )]
+transform = Transform( 150, 0, 0, 0, -4.37114e-07, -150, 0, 10, -6.55671e-06, 150, -143, 150 )

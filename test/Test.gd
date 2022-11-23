@@ -2,6 +2,13 @@ extends Spatial
 
 onready var body = get_node("KinematicBody")
 
+func _ready():
+    var a := Vector3(-0.18, -0.7, 0.95).normalized()
+    var b := Vector3(15, 2, -5).normalized()
+    print(a)
+    print(b)
+    print(a.cross(b).cross(b).cross(b).cross(b).normalized())
+
 func _physics_process(delta):
     if Input.is_action_just_pressed("ability_0"):
         body.transform.origin = Vector3(0, 2, 0)

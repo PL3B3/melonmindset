@@ -17,12 +17,18 @@ func _process(_delta):
 onready var state = {
     "velocity": Vector3(), 
     "position": global_transform.origin, 
+    "grounded": false,
+    "floor_normal": Vector3(),
     "floor_normals": [Vector3(), Vector3(), Vector3()]
 }
 
+var tick = 0
 func _physics_process(delta):
-#    var resim_state = movement_.resimulate(self, delta)
-#    if resim_state: state = resim_state
+    tick += 1
+#    if tick % 60 == 0:
+#        print(state.position)
+    var resim_state = movement_.resimulate(self, delta)
+    if resim_state: state = resim_state
     input_._update_input(self)
     state = movement_._simulate(state, inputs[-1], delta)
 #    print(movement_.is_on_floor())
