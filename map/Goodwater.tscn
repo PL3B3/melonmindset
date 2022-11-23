@@ -1,6 +1,6 @@
 [gd_scene load_steps=24 format=2]
 
-[ext_resource path="res://scenes/player/Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://test/TestQueryPerf.tscn" type="PackedScene" id=1]
 [ext_resource path="res://materials/seamless_wood_tx.jpg" type="Texture" id=3]
 [ext_resource path="res://materials/StoneWallMaterial.tres" type="Material" id=4]
 
@@ -185,24 +185,20 @@ shape = SubResource( 3 )
 transform = Transform( 1.93185, 0.258819, 0, -0.517638, 0.965926, 0, 0, 0, 2, -42.2868, 0.207452, -7.91335 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Geometry/Misc/lowplat5"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 mesh = SubResource( 6 )
 material/0 = ExtResource( 4 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Geometry/Misc/lowplat5"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 shape = SubResource( 7 )
 
 [node name="lowplat7" type="StaticBody" parent="Geometry/Misc"]
 transform = Transform( 0.866025, 1.2, 0, -0.5, 2.07846, 0, 0, 0, 7.57466, -24.0867, 1.31677, 0 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Geometry/Misc/lowplat7"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 mesh = SubResource( 6 )
 material/0 = ExtResource( 4 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Geometry/Misc/lowplat7"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 shape = SubResource( 7 )
 
 [node name="lowplat6" type="StaticBody" parent="Geometry/Misc"]
@@ -1057,5 +1053,5 @@ material/0 = ExtResource( 4 )
 [node name="Camera" type="Camera" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 15.5168, 5.21725, 3.93418 )
 
-[node name="Player" parent="." instance=ExtResource( 1 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -72.1816, -1.03676, -1.17598 )
+[node name="Spatial" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -79, -1, 0 )

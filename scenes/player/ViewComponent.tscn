@@ -3,7 +3,7 @@
 [ext_resource path="res://scenes/player/ViewComponent.gd" type="Script" id=1]
 [ext_resource path="res://assets/saul.jpg" type="Texture" id=2]
 
-[sub_resource type="SphereMesh" id=3]
+[sub_resource type="CylinderMesh" id=3]
 
 [sub_resource type="SpatialMaterial" id=2]
 albedo_texture = ExtResource( 2 )
