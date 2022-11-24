@@ -1,5 +1,6 @@
 extends Spatial
 
+onready var kb = $KinematicBody
 var query_shape := CylinderShape.new()
 var shape_query = PhysicsShapeQueryParameters.new()
 
@@ -11,7 +12,7 @@ func _ready():
 
 func _physics_process(delta):
     for i in 100:
-        collide_shape()
+        test_motion()
 
 func collide_shape():
     var space_state = get_world().direct_space_state
@@ -22,3 +23,8 @@ func collide_shape():
             shape_query.exclude = shape_query.exclude + [result.rid]
         else:
             break
+
+func test_motion():
+    var a := PhysicsTestMotionResult.new()
+    PhysicsServer.body_test_motion(
+        kb.get_rid(), global_transform, Vector3.DOWN, false, a)

@@ -1,22 +1,34 @@
 extends RigidBody
 
+const SHAPECAST_DISTANCE:float = 0.1
+const SHAPECAST_TOLERANCE:float = 0.04
+const TOLERANCE:float = 0.01
+const FLOOR_ANGLE:float = deg2rad(45)
 onready var camera = $VisualRoot/Camera
 onready var mesh = $MeshInstance
 onready var visual_root = $VisualRoot
-var speed:float = 7.5
-var acceleration:float = 10.0
-var velocity:Vector3 = Vector3()
-var last_position = Vector3()
+onready var delta = 1.0 / Engine.iterations_per_second
+var speed:float = 10.0
+var max_speed_ratio:float = 1.3
+var accel_gnd:float = 12.0
+var accel_air:float = 5.0
 var jump_height:float = 3.5
 var jump_duration:float = 0.35
 var gravity:float = (2.0 * jump_height) / (pow(jump_duration, 2))
 var jump_force:float = gravity * jump_duration
+var velocity:Vector3 = Vector3()
+var position:Vector3
+var floor_normal:Vector3 = Vector3()
+var last_position = Vector3()
 
 var mouse_sensitivity:float = 0.05
 var yaw:float = 0.0
 var pitch:float = 0.0
 
+var query_shape := CylinderShape.new()
+
 func _ready():
+    query_shape.height = 1.0
     Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
     visual_root.set_as_toplevel(true)
 
@@ -32,12 +44,10 @@ func _unhandled_input(event):
         elif Input.get_mouse_mode() == Input.MOUSE_MODE_VISIBLE:
             Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
-
 func _process(delta):
     visual_root.global_transform.origin = last_position.linear_interpolate(
         global_transform.origin, Engine.get_physics_interpolation_fraction()
     )
-#    print((global_transform.origin - get_global_transform_interpolated().origin).length())
     visual_root.rotation_degrees.y = yaw
     camera.rotation_degrees.x = pitch
     mesh.rotation_degrees.y = yaw
@@ -45,14 +55,14 @@ func _process(delta):
     
 var simulating = false
 func _physics_process(delta):
-#    for i in 5:
-#        simulating = true
+    for i in 24:
+        simulating = true
 #        PhysicsServer.simulate(1.0 / 60.0)
-#        simulating = false
+        simulating = false
     if Input.is_action_pressed("click"):
 #        print("simulating")
         simulating = true
-        for i in 10:
+        for i in 24:
             PhysicsServer.simulate(1.0 / 60.0)
         simulating = false
     if Input.is_action_just_pressed("alt_click"):
@@ -60,52 +70,42 @@ func _physics_process(delta):
 #    print(linear_velocity)
     last_position = global_transform.origin
     
-var grounded = false
+
 func _integrate_forces(state):
-    var delta:float = 1.0 / Engine.iterations_per_second
-    var forward = Input.get_action_strength("move_forward") - Input.get_action_strength("move_backward")
-    var right = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
-    var dir := Vector3(right, 0, -forward).normalized()
-    dir = dir.rotated(Vector3.UP, deg2rad(yaw))
-    var y_tmp = velocity.y
-    velocity = velocity.linear_interpolate(dir * speed, delta * acceleration)
-    velocity.y = y_tmp
-    var floor_normals:Array = []
-#    var floor_normal = Vector3()
-    for i in state.get_contact_count():
-        var normal: Vector3 = state.get_contact_local_normal(i)
-        if normal.angle_to(Vector3.UP) <= (PI / 4) + 0.01:
-            floor_normals.push_back(normal)
-    var floor_normal = sum_vectors(floor_normals).normalized()
-#    var floor_normal = shapecast(state.transform.origin + Vector3.DOWN * 0.1, Vector3.DOWN * 0.1)
-#    print(state.get_contact_count(), " ", floor_normal)
-    
-    print(vtos(floor_normal))
-    if floor_normal and floor_normal.angle_to(Vector3.UP) <= (PI / 4) + 0.01:
-        velocity = Math.get_slope_velocity(velocity, floor_normal)
+    velocity = linear_velocity
+    position = global_transform.origin
+    floor_normal = collide_floor(position + Vector3.DOWN * 0.1)
+    var direction = direction()
+    var h_velocity = Vector3(velocity.x, 0, velocity.z)
+    if floor_normal and is_floor(floor_normal):
+        var speed_ratio = h_velocity.length() / speed
+        if speed_ratio > max_speed_ratio:
+            velocity.x *= max_speed_ratio / speed_ratio
+            velocity.z *= max_speed_ratio / speed_ratio
+        # maintain horizontal velocity (x and z) on slopes
+        var target_vel = Math.get_slope_velocity(direction * speed, floor_normal)
+        velocity = velocity.linear_interpolate(target_vel, clamp(accel_gnd * delta, 0.0, 1.0))
+        var wall_normal:Vector3 = collide(position + velocity.normalized() * SHAPECAST_DISTANCE)
+#        wall_normal = collide_lower(position + direction * SHAPECAST_DISTANCE)
+#        print(vtos(wall_normal))
+        if should_wall_slide(velocity, wall_normal):
+            print("%s - %s - %s" % [vtos(wall_normal), vtos(velocity), OS.get_ticks_msec()])
+            var slide_direction = wall_normal.slide(floor_normal).normalized()
+            velocity = velocity.slide(slide_direction)
+            velocity -= floor_normal * 1.0
         if Input.is_action_pressed("jump"):
             velocity.y = jump_force
-#        velocity = velocity.slide(floor_normal)
     else:
+        if h_velocity.dot(direction) <= speed:
+            velocity += direction * (speed - h_velocity.dot(direction)) * accel_air * delta
         velocity.y -= gravity * delta
-    state.linear_velocity = velocity
-
-    var contacts = []
-    for i in state.get_contact_count():
-        contacts.push_back(vtos(state.get_contact_local_normal(i)))
-#    print("%s: %7d -- %s" % [int(simulating), OS.get_ticks_msec(), contacts])
-
-    
-
-func sum_vectors(vectors):
-    var sum = Vector3()
-    for vector in vectors: sum += vector
-    return sum
+    linear_velocity = velocity
 
 
-
-func vtos(vector:Vector3):
-    return "(%+.2f, %+.2f, %+.2f)" % [vector.x, vector.y, vector.z]
+func direction():
+    var forward = Input.get_action_strength("move_forward") - Input.get_action_strength("move_backward")
+    var right = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
+    return Vector3(right, 0, -forward).normalized().rotated(Vector3.UP, deg2rad(yaw))
 
 func raycast():
     var space_state = get_world().direct_space_state
@@ -116,14 +116,78 @@ func raycast():
     if result and is_instance_valid(result.collider):
         print("Hit ", result.collider)
 
-onready var sweep_shape:CylinderShape = CylinderShape.new()
-func shapecast(origin, motion):
+func collide_shape(position:Vector3, shape:Shape, iters:int):
     var space_state = get_world().direct_space_state
     var shape_query = PhysicsShapeQueryParameters.new()
     shape_query.exclude = [self]
-    shape_query.margin = 0.05
-    shape_query.set_shape(sweep_shape)
-    shape_query.transform.origin = origin
-    var cast_result = space_state.cast_motion(shape_query, motion)
-    var result = space_state.get_rest_info(shape_query)
-    return result.normal if result else Vector3()
+    shape_query.set_shape(shape)
+    shape_query.transform.origin = position
+    var results = []
+    var normal = Vector3()
+    for i in iters:
+        var result = space_state.get_rest_info(shape_query)
+        if result: 
+            results.push_back(result)
+            shape_query.exclude = shape_query.exclude + [result.rid]
+    return results
+
+# position of player
+func collide_head(position:Vector3) -> Vector3:
+    var results = collide_shape(position + Vector3(0, 0.5, 0), query_shape, 1)
+    return results[0].normal if results else Vector3()
+
+func collide_feet(position:Vector3) -> Vector3:
+    var results = collide_shape(position - Vector3(0, 0.5 - SHAPECAST_TOLERANCE, 0), query_shape, 1)
+    return results[0].normal if results else Vector3()
+
+# using near full-height collider for cases where the wall is at head height
+# tradeoff: leads to some jitter when pushing into two sloped ceiling walls
+# if that's more important, use a shorter collider @ feet
+func collide(position:Vector3) -> Vector3:
+    var shape = CylinderShape.new()
+    shape.height = $CollisionShape.shape.height - 2 * SHAPECAST_TOLERANCE
+    var results = collide_shape(position, shape, 1)
+    return results[0].normal if results else Vector3()
+
+func collide_floor(position:Vector3) -> Vector3:
+    var results = collide_shape(position - Vector3(0, 0.5, 0), query_shape, 4)
+    var floor_normal = Vector3()
+    for result in results:
+        if is_floor(result.normal):
+            floor_normal += result.normal
+    return floor_normal.normalized()
+
+func collide_lower(position:Vector3) -> Vector3:
+    var results = collide_shape(position - Vector3(0, 0.5, 0), query_shape, 4)
+    var normal = Vector3()
+    for result in results:
+        if not is_floor(result.normal) and result.normal.dot(Vector3.UP) > -TOLERANCE:
+            normal += result.normal
+    return normal.normalized()
+
+func collide_upper(position:Vector3) -> Vector3:
+    var results = collide_shape(position, query_shape, 4)
+    var upper_normal = Vector3()
+    for result in results:
+        if not is_floor(result.normal):
+            upper_normal += result.normal
+    return upper_normal.normalized()
+
+func vsum(vectors:Array) -> Vector3:
+    var sum := Vector3()
+    for vector in vectors: sum += vector
+    return sum
+
+func vtos(vector:Vector3):
+    return "(%+.3f, %+.3f, %+.3f)" % [vector.x, vector.y, vector.z]
+
+func is_floor(normal:Vector3) -> bool:
+    return normal.angle_to(Vector3.UP) <= FLOOR_ANGLE + TOLERANCE
+
+func should_wall_slide(motion:Vector3, wall_normal:Vector3) -> bool:
+    return (
+        not is_floor(wall_normal) 
+        and abs(motion.slide(wall_normal).dot(Vector3.UP)) > TOLERANCE # will slide vertically
+#        and wall_normal.dot(Vector3.UP) > -(FLOOR_ANGLE + TOLERANCE) # isn't a ceiling
+        and wall_normal.dot(motion) < TOLERANCE # motion is pushing into wall
+    )
