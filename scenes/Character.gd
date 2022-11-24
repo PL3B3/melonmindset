@@ -4,6 +4,7 @@ const SHAPECAST_DISTANCE:float = 0.1
 const SHAPECAST_TOLERANCE:float = 0.04
 const TOLERANCE:float = 0.01
 const FLOOR_ANGLE:float = deg2rad(45)
+const STEP_HEIGHT:float = 0.5
 onready var camera = $VisualRoot/Camera
 onready var mesh = $MeshInstance
 onready var visual_root = $VisualRoot
@@ -77,6 +78,7 @@ func _integrate_forces(state):
     floor_normal = collide_floor(position + Vector3.DOWN * 0.1)
     var direction = direction()
     var h_velocity = Vector3(velocity.x, 0, velocity.z)
+#    print(vtos(floor_normal))
     if floor_normal and is_floor(floor_normal):
         var speed_ratio = h_velocity.length() / speed
         if speed_ratio > max_speed_ratio:
@@ -89,7 +91,7 @@ func _integrate_forces(state):
 #        wall_normal = collide_lower(position + direction * SHAPECAST_DISTANCE)
 #        print(vtos(wall_normal))
         if should_wall_slide(velocity, wall_normal):
-            print("%s - %s - %s" % [vtos(wall_normal), vtos(velocity), OS.get_ticks_msec()])
+#            print("%s - %s - %s" % [vtos(wall_normal), vtos(velocity), OS.get_ticks_msec()])
             var slide_direction = wall_normal.slide(floor_normal).normalized()
             velocity = velocity.slide(slide_direction)
             velocity -= floor_normal * 1.0
@@ -101,6 +103,19 @@ func _integrate_forces(state):
         velocity.y -= gravity * delta
     linear_velocity = velocity
 
+func step():
+    var result := PhysicsTestMotionResult.new()
+    var sweep_start := position
+    # up
+    if test_motion(sweep_start, Vector3.UP * STEP_HEIGHT, result):
+        pass
+    # forward
+    
+    # down
+    
+
+func test_motion(position:Vector3, motion:Vector3, result:PhysicsTestMotionResult) -> bool:
+    return PhysicsServer.body_test_motion(get_rid(), Transform(Basis.IDENTITY, position), motion, false, result)
 
 func direction():
     var forward = Input.get_action_strength("move_forward") - Input.get_action_strength("move_backward")
