@@ -5,7 +5,7 @@ const SHAPECAST_TOLERANCE:float = 0.04
 const TOLERANCE:float = 0.01
 const FLOOR_ANGLE:float = deg2rad(45)
 const STEP_HEIGHT:float = 0.5
-const SNAP_LENGTH:float = 0.5
+const SNAP_LENGTH:float = 0.25
 onready var camera = $VisualRoot/Camera
 onready var mesh = $MeshInstance
 onready var visual_root = $VisualRoot
@@ -75,17 +75,21 @@ func _physics_process(delta):
 
 func _integrate_forces(state):
 	velocity = linear_velocity
-	position = global_transform.origin
-	floor_normal = collide_floor(position + Vector3.DOWN * 0.1)
+	position = state.transform.origin
 	var snap = Vector3.DOWN * SNAP_LENGTH
 	var direction = direction()
 	var h_velocity = Vector3(velocity.x, 0, velocity.z)
-#    print(vtos(floor_normal))
-	var floor_test := PhysicsTestMotionResult.new()
-	var snap_motion = snap - h_velocity * delta
-	if test_motion(position + Vector3.UP * TOLERANCE + h_velocity * delta, snap_motion, floor_test):
-		if is_floor(result.collision_normal):
+	floor_normal = collide_floor(position + Vector3.DOWN * 0.25)
+#	var feet_result = cast_motion(position, Vector3.DOWN)
+#	print(feet_result)
+#	if feet_result:
+#		print(feet_result.point.y - position.y + 1)
+#	else:
+#		print("no result")
 	if floor_normal and is_floor(floor_normal):
+#		print_vecs([floor_normal, position, velocity])
+		snap_to_floor(floor_normal, state)
+#		print_vecs([position])
 		var speed_ratio = h_velocity.length() / speed
 		if speed_ratio > max_speed_ratio:
 			velocity.x *= max_speed_ratio / speed_ratio
@@ -110,29 +114,41 @@ func _integrate_forces(state):
 			velocity += direction * (speed - h_velocity.dot(direction)) * accel_air * delta
 		velocity.y -= gravity * delta
 		snap = Vector3.DOWN * 0.1
-	var result := PhysicsTestMotionResult.new()
-	var snap_motion = snap - h_velocity * delta
-	if test_motion(position + Vector3.UP * TOLERANCE + h_velocity * delta, snap_motion, result):
-		if is_floor(result.collision_normal):
-#            position += Vector3.UP * 0.001
-#                velocity = velocity.slide(result.collision_normal)
-#                if h_velocity.dot(floor_normal) > h_velocity.dot(result.collision_normal) + TOLERANCE:
-#                    print("going up slope")
-#                    print(vtos(floor_normal), " ", vtos(result.collision_normal))
-#                elif h_velocity.dot(floor_normal) < h_velocity.dot(result.collision_normal) - TOLERANCE:
-#                    print("going down slope")
-#                    print(vtos(floor_normal), " ", vtos(result.collision_normal))
-			velocity = Math.get_slope_velocity(velocity, result.collision_normal)
-#			print("%s %s %s" % [vtos(position), vtos(velocity), vtos(result.collision_normal)])
-#    else:
-#        print("NAY!")
-	h_velocity = Vector3(velocity.x, 0, velocity.z)
-#    print("%.1f" % h_velocity.length())
+#	var result := PhysicsTestMotionResult.new()
+#	var snap_motion = snap
+#	if test_motion(position + Vector3.UP * TOLERANCE + h_velocity * delta, snap_motion, result):
+#		if is_floor(result.collision_normal):
+##            position += Vector3.UP * 0.001
+##                velocity = velocity.slide(result.collision_normal)
+##                if h_velocity.dot(floor_normal) > h_velocity.dot(result.collision_normal) + TOLERANCE:
+##                    print("going up slope")
+##                    print(vtos(floor_normal), " ", vtos(result.collision_normal))
+##                elif h_velocity.dot(floor_normal) < h_velocity.dot(result.collision_normal) - TOLERANCE:
+##                    print("going down slope")
+##                    print(vtos(floor_normal), " ", vtos(result.collision_normal))
+#			velocity = Math.get_slope_velocity(velocity, result.collision_normal)
+##			print("%s %s %s" % [vtos(position), vtos(velocity), vtos(result.collision_normal)])
+#	h_velocity = Vector3(velocity.x, 0, velocity.z)
+#	print("%.1f" % h_velocity.length())
 #    var s_vec = detect_down_slope(position, velocity)
 #    if s_vec:
 #        velocity += s_vec
-	global_transform.origin = position
+#	global_transform.origin = position
 	linear_velocity = velocity
+
+func cast_motion(position, motion):
+	var space_state = get_world().direct_space_state
+	var shape_query = PhysicsShapeQueryParameters.new()
+	shape_query.exclude = [self]
+	shape_query.set_shape(query_shape)
+	shape_query.transform.origin = position + Vector3(0, -0.5, 0)
+	return space_state.cast_motion(shape_query, motion)
+
+func snap_to_floor(floor_norm, state:PhysicsDirectBodyState):
+	var result := PhysicsTestMotionResult.new()
+	if test_motion(state.transform.origin, Vector3.DOWN * SNAP_LENGTH, result) and is_floor(result.collision_normal):
+		state.transform.origin += result.motion.project(result.collision_normal)
+		print("snapped", OS.get_ticks_msec())
 
 func detect_down_slope(position, velocity):
 	var space_state = get_world().direct_space_state
@@ -180,7 +196,9 @@ func raycast():
 	if result and is_instance_valid(result.collider):
 		print("Hit ", result.collider)
 
-func collide_shape(position:Vector3, shape:Shape, iters:int):
+
+
+func collide_shape(position:Vector3, shape:Shape=query_shape, iters:int=1):
 	var space_state = get_world().direct_space_state
 	var shape_query = PhysicsShapeQueryParameters.new()
 	shape_query.exclude = [self]
@@ -255,3 +273,9 @@ func should_wall_slide(motion:Vector3, wall_normal:Vector3) -> bool:
 #        and wall_normal.dot(Vector3.UP) > -(FLOOR_ANGLE + TOLERANCE) # isn't a ceiling
 		and wall_normal.dot(motion) < TOLERANCE # motion is pushing into wall
 	)
+
+func print_vecs(vecs):
+	var vec_str = ""
+	for vec in vecs:
+		vec_str += vtos(vec) + " - "
+	print(vec_str)

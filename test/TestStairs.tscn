@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://materials/PrototypeMaterial.tres" type="Material" id=1]
 [ext_resource path="res://map/environment.tres" type="Environment" id=2]
@@ -13,10 +13,6 @@
 
 [sub_resource type="PrismMesh" id=5]
 left_to_right = 0.0
-size = Vector3( 1, 1, 1 )
-
-[sub_resource type="PrismMesh" id=10]
-left_to_right = 1.0
 size = Vector3( 1, 1, 1 )
 
 [node name="TestMap" type="Spatial"]
@@ -180,22 +176,14 @@ transform = Transform( 5, 0, 0, 0, 3, 0, 0, 0, 2, 2, 0, -3 )
 [node name="Ramp" type="Spatial" parent="Geometry"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 13.1132, 0, -5.97836 )
 
-[node name="Ramp" type="StaticBody" parent="Geometry/Ramp"]
-transform = Transform( 5, 0, 0, 0, 5, 0, 0, 0, 5, -6.57076, 2, -7.1052 )
-
-[node name="CollisionPolygon" type="CollisionPolygon" parent="Geometry/Ramp/Ramp"]
-polygon = PoolVector2Array( 0, 0, 1, 0, 1, 1 )
-
-[node name="MeshInstance" type="MeshInstance" parent="Geometry/Ramp/Ramp"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0 )
-mesh = SubResource( 10 )
-material/0 = ExtResource( 1 )
-
 [node name="Plat" parent="Geometry/Ramp" instance=ExtResource( 3 )]
 transform = Transform( 3, 0, 0, 0, 3, 0, 0, 0, 3, 1.42924, 4, -1.1052 )
 
 [node name="Plat2" parent="Geometry/Ramp" instance=ExtResource( 3 )]
 transform = Transform( 4.98831, 1.5, 0, -2.88, 2.59808, 0, 0, 0, 3, 7.92818, 1.51304, -1.1052 )
+
+[node name="Plat4" parent="Geometry/Ramp" instance=ExtResource( 3 )]
+transform = Transform( -4.62077e-07, -3.39401e-08, 3, -2.83252, 2.89778, 3.18528e-15, -10.5711, -0.776458, -1.31134e-07, 1.45392, 1.25914, -13.9256 )
 
 [node name="Plat3" parent="Geometry/Ramp" instance=ExtResource( 3 )]
 transform = Transform( -4.07294, -2.12132, -2.53332e-07, -4.07294, 2.12132, -6.788e-08, 4.36092e-07, 1.31134e-07, -3, -3.51916, 0.802882, -1.1052 )
@@ -225,4 +213,4 @@ cull_mask = 1048573
 [node name="Target2" parent="Camera" instance=ExtResource( 3 )]
 
 [node name="RigidBody" parent="." instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 3 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 6.01097, 3.4792, -7 )
