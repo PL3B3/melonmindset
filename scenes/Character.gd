@@ -85,13 +85,22 @@ if floor below:
 	snap to floor
 	friction / speed limit
 	lerp velocity towards input direction
-	
+	for i in 2: # in case wall immediately after step up/down (may be too edgy of an edge case)
+		check if walking into wall
+		if wall:
+			if stair step:
+				step up
+			else:
+				wall slide
+	do jump
 else:
 	air strafing
 	gravity
 
 """
-
+# TODO: wall sliding in flat corner...seems like velocity has a downwards y component, always .25
+# regardless of the wall slide down force (unless it's 0)
+# lowering the wall check distance seems to work...
 func _integrate_forces(state):
 	velocity = linear_velocity
 	position = state.transform.origin
@@ -112,9 +121,9 @@ func _integrate_forces(state):
 		velocity = velocity.linear_interpolate(target_vel, clamp(accel_gnd * delta, 0.0, 1.0))
 		# slide along obstructions, instead of pushing into them (jiggly)
 		h_velocity = Vector3(velocity.x, 0, velocity.z)
-		var wall_normal:Vector3 = collide(position + h_velocity.normalized() * SHAPECAST_DISTANCE)
-#		pvecs([wall_normal])
-		print("%.2f" % wall_normal.dot(Vector3.UP))
+		var wall_normal:Vector3 = collide(position + h_velocity.normalized() * 0.005)
+		pvecs([wall_normal, velocity])
+#		print("%.2f" % wall_normal.dot(Vector3.UP))
 #		collide(position + direction * SHAPECAST_DISTANCE)
 #		collide_lower(position + direction * SHAPECAST_DISTANCE)
 		if should_wall_slide(velocity, wall_normal):

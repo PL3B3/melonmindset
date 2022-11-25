@@ -170,6 +170,9 @@ material/0 = ExtResource( 1 )
 [node name="Box" parent="Geometry/Obstacles6" instance=ExtResource( 3 )]
 transform = Transform( 5, 0, 0, 0, 3, 0, 0, 0, 4, 6, 0, 3 )
 
+[node name="Box3" parent="Geometry/Obstacles6" instance=ExtResource( 3 )]
+transform = Transform( 5, 0, 0, 0, 3, 0, 0, 0, 4, 7, 0, 4 )
+
 [node name="Box2" parent="Geometry/Obstacles6" instance=ExtResource( 3 )]
 transform = Transform( 5, 0, 0, 0, 3, 0, 0, 0, 2, 2, 0, -3 )
 
@@ -222,7 +225,7 @@ transform = Transform( 0.822787, 0.971246, 1.19878, -3.91446, 0.203957, 0.26738,
 transform = Transform( -1.72288, 0.901192, -0.483093, 3.60989, 0.430378, -0.178187, 0.0189328, -0.0512728, -9.98673, 0.352104, 4.81277, 3.8147e-06 )
 
 [node name="Block8" parent="Geometry/Tunnels" instance=ExtResource( 3 )]
-transform = Transform( -1.72288, 0.901192, -0.483093, 3.60989, 0.430378, -0.178187, 0.0189328, -0.0512728, -9.98673, 0.352104, 4.81277, 20 )
+transform = Transform( -1.72288, 0.901192, -0.483093, 3.60989, 0.430378, -0.178187, 0.0189328, -0.0512728, -9.98673, 1.45324, 4.81277, 20 )
 
 [node name="Block4" parent="Geometry/Tunnels" instance=ExtResource( 3 )]
 transform = Transform( -1.65928, 0.857214, -1.83083, 3.51131, 0.465278, 0.682371, 0.957857, -0.220683, -5.67295, 11.3521, 4.81277, 3.8147e-06 )
@@ -249,10 +252,10 @@ transform = Transform( 5.73206e-15, 4.37114e-08, -6, 2.59808, 0.5, 1.31134e-07, 
 transform = Transform( -1.06066, 0.612372, -4.24264, 2.59808, 0.5, 1.31134e-07, 1.06066, -0.612372, -4.24264, 0, 4, 9 )
 
 [node name="Block13" parent="Geometry/SlopeCorners" instance=ExtResource( 3 )]
-transform = Transform( -0.108166, -0.112298, -5.95812, 2.48469, 0.552688, -0.555445, 1.67768, -0.825787, 0.438489, 0, 4, 20 )
+transform = Transform( -0.108166, -0.112298, -5.95812, 2.48469, 0.552688, -0.555445, 1.67768, -0.825787, 0.438489, 0, 3, 20 )
 
 [node name="Block14" parent="Geometry/SlopeCorners" instance=ExtResource( 3 )]
-transform = Transform( -1.19623, 0.515896, -4.54915, 2.41485, 0.59301, -0.118996, 1.31815, -0.618215, -3.91038, 0, 4, 20 )
+transform = Transform( -1.19623, 0.515896, -4.54915, 2.41485, 0.59301, -0.118996, 1.31815, -0.618215, -3.91038, 0, 3, 20 )
 
 [node name="Block10" parent="Geometry/SlopeCorners" instance=ExtResource( 3 )]
 transform = Transform( -0.672432, 0.836516, -3, 2.89778, 0.258819, 6.788e-08, 0.388228, -0.482963, -5.19615, 0, 4, -2 )
