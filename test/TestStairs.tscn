@@ -189,7 +189,7 @@ transform = Transform( -4.62077e-07, -3.39401e-08, 3, -2.83252, 2.89778, 3.18528
 transform = Transform( -4.07294, -2.12132, -2.53332e-07, -4.07294, 2.12132, -6.788e-08, 4.36092e-07, 1.31134e-07, -3, -3.51916, 0.802882, -1.1052 )
 
 [node name="Stairs" type="Spatial" parent="Geometry"]
-transform = Transform( -0.5, 0, -4.37114e-08, 0, 0.5, 0, 4.37114e-08, 0, -0.5, 0, 1, 0 )
+transform = Transform( -1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, 0, 0, 0 )
 
 [node name="Step1" parent="Geometry/Stairs" instance=ExtResource( 3 )]
 transform = Transform( 4, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 2.5, 0 )

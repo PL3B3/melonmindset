@@ -72,17 +72,35 @@ func _physics_process(delta):
 #    print(linear_velocity)
 	last_position = global_transform.origin
 	
+"""
+NOTE: 0.25 is used everywhere, but nothing special about it, tune if needed
+
+down_dist = how far you can cast_motion down
+[makes floor check more precise on stairs/ledges]
+
+if down_dist < FLOOR_CHECK_DIST:
+	do floor check @ down_dist + TOLERANCE
+
+if floor below:
+	snap to floor
+	friction / speed limit
+	lerp velocity towards input direction
+	
+else:
+	air strafing
+	gravity
+
+"""
 
 func _integrate_forces(state):
 	velocity = linear_velocity
 	position = state.transform.origin
-	var snap = Vector3.DOWN * SNAP_LENGTH
 	var direction = direction()
 	var h_velocity = Vector3(velocity.x, 0, velocity.z)
 	floor_normal = collide_floor(position + Vector3.DOWN * 0.25)
+#	pvecs([floor_normal])
 	if floor_normal and is_floor(floor_normal):
-#		pvecs([floor_normal, position, velocity])
-		snap_to_floor(floor_normal, state)
+		snap_to_floor(state)
 		position = state.transform.origin
 #		pvecs([position])
 		var speed_ratio = h_velocity.length() / speed
@@ -92,26 +110,27 @@ func _integrate_forces(state):
 		# maintain horizontal velocity (x and z) on slopes
 		var target_vel = Math.get_slope_velocity(direction * speed, floor_normal)
 		velocity = velocity.linear_interpolate(target_vel, clamp(accel_gnd * delta, 0.0, 1.0))
-		var wall_normal:Vector3 = collide_feet(position + direction * SHAPECAST_DISTANCE)
+		# slide along obstructions, instead of pushing into them (jiggly)
+		h_velocity = Vector3(velocity.x, 0, velocity.z)
+		var wall_normal:Vector3 = collide(position + h_velocity.normalized() * SHAPECAST_DISTANCE)
+#		pvecs([wall_normal])
+		print("%.2f" % wall_normal.dot(Vector3.UP))
 #		collide(position + direction * SHAPECAST_DISTANCE)
-#		var wall_normal = collide_lower(position + direction * SHAPECAST_DISTANCE)
-#        print(vtos(wall_normal))
+#		collide_lower(position + direction * SHAPECAST_DISTANCE)
 		if should_wall_slide(velocity, wall_normal):
-			pvecs([floor_normal, velocity, wall_normal])
+#			print("wall slide")
 			var slide_direction = wall_normal.slide(floor_normal).normalized()
 			velocity = velocity.slide(slide_direction)
 			velocity -= floor_normal * 0.25
 #		else:
-#			print("nay")
+#			print("not")
 		if Input.is_action_pressed("jump"):
 			velocity.y = jump_force
-			snap = Vector3()
 	else:
 #		print('air %s' % OS.get_ticks_msec())
 		if h_velocity.dot(direction) <= speed:
 			velocity += direction * (speed - h_velocity.dot(direction)) * accel_air * delta
 		velocity.y -= gravity * delta
-		snap = Vector3.DOWN * 0.1
 	linear_velocity = velocity
 
 func cast_motion(position, motion):
@@ -122,7 +141,7 @@ func cast_motion(position, motion):
 	shape_query.transform.origin = position + Vector3(0, -0.5, 0)
 	return space_state.cast_motion(shape_query, motion)
 
-func snap_to_floor(floor_norm, state:PhysicsDirectBodyState):
+func snap_to_floor(state:PhysicsDirectBodyState):
 	var result := PhysicsTestMotionResult.new()
 	if test_motion(state.transform.origin, Vector3.DOWN * SNAP_LENGTH, result) and is_floor(result.collision_normal):
 		state.transform.origin += result.motion.project(result.collision_normal)
@@ -175,7 +194,7 @@ func raycast():
 		print("Hit ", result.collider)
 
 
-
+# TODO exclude specific collision shapes, not whole colliders
 func collide_shape(position:Vector3, shape:Shape=query_shape, iters:int=1):
 	var space_state = get_world().direct_space_state
 	var shape_query = PhysicsShapeQueryParameters.new()
@@ -205,7 +224,7 @@ func collide_feet(position:Vector3) -> Vector3:
 # if that's more important, use a shorter collider @ feet
 func collide(position:Vector3) -> Vector3:
 	var shape = CylinderShape.new()
-	shape.height = $CollisionShape.shape.height - 2 * SHAPECAST_TOLERANCE
+	shape.height = $CollisionShape.shape.height # - TOLERANCE
 	var results = collide_shape(position, shape, 1)
 	return results[0].normal if results else Vector3()
 
@@ -248,7 +267,7 @@ func should_wall_slide(motion:Vector3, wall_normal:Vector3) -> bool:
 	return (
 		not is_floor(wall_normal) 
 		and abs(motion.slide(wall_normal).dot(Vector3.UP)) > TOLERANCE # will slide vertically
-#        and wall_normal.dot(Vector3.UP) > -(FLOOR_ANGLE + TOLERANCE) # isn't a ceiling
+		and wall_normal.dot(Vector3.UP) > -0.25 # isn't a ceiling
 		and wall_normal.dot(motion) < TOLERANCE # motion is pushing into wall
 	)
 
